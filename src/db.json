@@ -1,0 +1,250 @@
+{
+    "users": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb600')",
+        "roles": ["admin", "user"],
+        "nombre": "Steve",
+        "email": "steve@example.com",
+        "password": "hashedpassword",
+        "passwordConfirm": "hashedpassword",
+        "passwordChangeAt": "2023-05-01T10:00:00Z",
+        "passwordResetToken": "randomtoken",
+        "passwordResetExpires": "2023-05-02T10:00:00Z",
+        "active": true,
+        "fechaCreacion": "2023-01-01T10:00:00Z",
+        "miembrosCambio": [
+          {
+            "proyecto_id": "ObjectId('60d5f9f5f26e4b0a6cddb601')"
+          }
+        ],
+        "equipoProyecto": [
+          {
+            "rolEquipo_id": "ObjectId('60d5f9f5f26e4b0a6cddb602')",
+            "proyecto_id": "ObjectId('60d5f9f5f26e4b0a6cddb601')"
+          }
+        ]
+      }
+    ],
+    "miembrosCambio": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb603')",
+        "user_id": "ObjectId('60d5f9f5f26e4b0a6cddb600')",
+        "proyecto_id": "ObjectId('60d5f9f5f26e4b0a6cddb601')"
+      }
+    ],
+    "equipoProyecto": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb604')",
+        "user_id": "ObjectId('60d5f9f5f26e4b0a6cddb600')",
+        "rolEquipo_id": "ObjectId('60d5f9f5f26e4b0a6cddb602')",
+        "proyecto_id": "ObjectId('60d5f9f5f26e4b0a6cddb601')"
+      }
+    ],
+    "rolEquipo": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb602')",
+        "nombre": "Developer"
+      }
+    ],
+    "metodologia": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb605')",
+        "nombre": "Agile",
+        "descripcion": "Agile development methodology",
+        "fases": [
+          {
+            "_id": "ObjectId('60d5f9f5f26e4b0a6cddb606')",
+            "nombre": "Planning",
+            "descripcion": "Planning phase"
+          }
+        ]
+      }
+    ],
+    "ecs": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb607')",
+        "estado_id": "ObjectId('60d5f9f5f26e4b0a6cddb608')",
+        "metodologia_id": "ObjectId('60d5f9f5f26e4b0a6cddb605')",
+        "fases_id": "ObjectId('60d5f9f5f26e4b0a6cddb606')",
+        "nombre": "EC1",
+        "descripcion": "First engineering change",
+        "tipoEcs": ["Type1", "Type2"],
+        "tipoTecnologia": ["Tech1", "Tech2"],
+        "version": "1.0",
+        "composicion": ["Component1", "Component2"],
+        "historialCambios": ["Change1", "Change2"]
+      }
+    ],
+    "proyecto": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb601')",
+        "metodologia_id": "ObjectId('60d5f9f5f26e4b0a6cddb605')",
+        "estado_id": "ObjectId('60d5f9f5f26e4b0a6cddb608')",
+        "nombre": "Project1",
+        "fechaCreacion": "2023-01-01T10:00:00Z",
+        "fechaActualizado": "2023-05-01T10:00:00Z",
+        "fechaFin": "2023-12-31T10:00:00Z",
+        "cronogramaEcs": [
+          {
+            "_id": "ObjectId('60d5f9f5f26e4b0a6cddb609')",
+            "estadoGestionProblemas_id": "ObjectId('60d5f9f5f26e4b0a6cddb610')",
+            "fases_id": "ObjectId('60d5f9f5f26e4b0a6cddb606')",
+            "ecs_id": "ObjectId('60d5f9f5f26e4b0a6cddb607')",
+            "miembros": [
+              {
+                "user_id": "ObjectId('60d5f9f5f26e4b0a6cddb600')",
+                "rol_id": "ObjectId('60d5f9f5f26e4b0a6cddb602')"
+              }
+            ],
+            "requerimientos": [
+              {
+                "requerimiento_id": "ObjectId('60d5f9f5f26e4b0a6cddb611')"
+              }
+            ],
+            "archivos": [
+              {
+                "archivo_id": "ObjectId('60d5f9f5f26e4b0a6cddb612')",
+                "nombreArchivo": "file1.txt",
+                "fechaCreacion": "2023-05-01T10:00:00Z"
+              }
+            ],
+            "fechaFin": "2023-12-31T10:00:00Z",
+            "fechaCreacion": "2023-01-01T10:00:00Z",
+            "fechaActualizado": "2023-05-01T10:00:00Z"
+          }
+        ]
+      }
+    ],
+    "estado": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb608')",
+        "nombre": "In Progress"
+      }
+    ],
+    "moduloRequerimientoFuncional": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb613')",
+        "nombre": "Module1",
+        "descripcion": "First functional requirement module"
+      }
+    ],
+    "requerimientoFuncional": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb611')",
+        "proyecto_id": "ObjectId('60d5f9f5f26e4b0a6cddb601')",
+        "requerimientoModulo_id": "ObjectId('60d5f9f5f26e4b0a6cddb613')",
+        "nombre": "Requirement1",
+        "descripcion": "First functional requirement",
+        "fechaCreacion": "2023-01-01T10:00:00Z",
+        "fechaActualizado": "2023-05-01T10:00:00Z",
+        "fechaFin": "2023-12-31T10:00:00Z"
+      }
+    ],
+    "solicitudCambio": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb614')",
+        "user_id": "ObjectId('60d5f9f5f26e4b0a6cddb600')",
+        "informeIncidencia_id": "ObjectId('60d5f9f5f26e4b0a6cddb615')",
+        "archivo": "change_request.pdf",
+        "nombreDocumento": "Change Request",
+        "descripcionDocumento": "Request for a change",
+        "fechaCreacion": "2023-05-01T10:00:00Z"
+      }
+    ],
+    "gestionProblemas": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb616')",
+        "user_id": "ObjectId('60d5f9f5f26e4b0a6cddb600')",
+        "estadoGestionProblemas_id": "ObjectId('60d5f9f5f26e4b0a6cddb610')",
+        "costoEstimado": 1000
+      }
+    ],
+    "detalleInformeCambio": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb617')",
+        "informeCambio_id": "ObjectId('60d5f9f5f26e4b0a6cddb618')",
+        "cronogramaEcs_id": "ObjectId('60d5f9f5f26e4b0a6cddb609')"
+      }
+    ],
+    "informeCambio": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb618')",
+        "user_id": "ObjectId('60d5f9f5f26e4b0a6cddb600')",
+        "gestionCambio_id": "ObjectId('60d5f9f5f26e4b0a6cddb619')",
+        "tipoCambio": ["Type1", "Type2"],
+        "nivelCambio": ["Low", "Medium"],
+        "estado": ["Open", "Closed"],
+        "archivo": "change_document.pdf",
+        "nombreArchivo": "Change Document",
+        "descripcionProblema": "Description of the problem",
+        "criterioAprobacionRechazo": "Approval criteria",
+        "efectosSecundarios": "Side effects",
+        "costoEstimado": 500
+      }
+    ],
+    "informeOrdenCambio": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb620')",
+        "user_id": "ObjectId('60d5f9f5f26e4b0a6cddb600')",
+        "informeCambio_id": "ObjectId('60d5f9f5f26e4b0a6cddb618')",
+        "archivo": "ObjectId('60d5f9f5f26e4b0a6cddb621')",
+        "nombreDocumento": "Order Change",
+        "restricciones": "Restrictions",
+        "criteriosAuditoria": "Audit criteria"
+      }
+    ],
+    "informeIncidencia": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb615')",
+        "user_id": "ObjectId('60d5f9f5f26e4b0a6cddb600')",
+        "ecs_id": "ObjectId('60d5f9f5f26e4b0a6cddb607')",
+        "archivo": "ObjectId('60d5f9f5f26e4b0a6cddb622')",
+        "nombreDocumento": "Incident Report",
+        "indicacionesDocumento": "Document indications",
+        "adjuntos": ["ObjectId('60d5f9f5f26e4b0a6cddb623')"],
+        "tiposPruebasDocumento": ["Test1", "Test2"],
+        "fechaCreacion": "2023-05-01T10:00:00Z",
+        "fechaActualizado": "2023-05-02T10:00:00Z",
+        "fechaFin": "2023-06-01T10:00:00Z"
+      }
+    ],
+    "bibliotecaMaestra": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb624')",
+        "proyecto_id": "ObjectId('60d5f9f5f26e4b0a6cddb601')",
+        "descripcion": "Master library description",
+        "cronogramaEcs": [
+          {
+            "archivo": "ObjectId('60d5f9f5f26e4b0a6cddb625')"
+          }
+        ]
+      }
+    ],
+    "bibliotecaTrabajo": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb626')",
+        "proyecto_id": "ObjectId('60d5f9f5f26e4b0a6cddb601')",
+        "descripcion": "Working library description",
+        "cronogramaEcs": [
+          {
+            "archivo": "ObjectId('60d5f9f5f26e4b0a6cddb627')"
+          }
+        ]
+      }
+    ],
+    "detalleBibliotecaMaestra": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb628')",
+        "bibliotecaMaestra_id": "ObjectId('60d5f9f5f26e4b0a6cddb624')",
+        "cronogramaEcs": ["ObjectId('60d5f9f5f26e4b0a6cddb629')"]
+      }
+    ],
+    "detalleTrabajo": [
+      {
+        "_id": "ObjectId('60d5f9f5f26e4b0a6cddb630')",
+        "bibliotecaTrabajo_id": "ObjectId('60d5f9f5f26e4b0a6cddb626')",
+        "cronogramaEcs": ["ObjectId('60d5f9f5f26e4b0a6cddb631')"]
+      }
+    ]
+  }
+  
