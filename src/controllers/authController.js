@@ -58,6 +58,7 @@ export const login = catchAsync(async (req, res, next) => {
   const user = await authService.loginService(email,password)
   console.log('2',user)
   if(typeof user === "string"){
+    console.log(translatorNext(req,user))
     return next(new appError(translatorNext(req,user), 400));
   }
   console.log('3',user)
