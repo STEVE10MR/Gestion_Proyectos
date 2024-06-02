@@ -18,10 +18,10 @@ const limiter = rateLimit({
 })
 
 const corsOptions = {
-  origin: 'http://127.0.0.1',
+  origin: ['http://127.0.0.1', 'http://161.132.39.183'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
-  allowedHeaders: 'Content-Type,Authorization'
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 const app = express()
