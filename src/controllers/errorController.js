@@ -61,7 +61,7 @@ export default (err, req, res, next) => {
   
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'alfa') {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
