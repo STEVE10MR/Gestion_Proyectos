@@ -18,7 +18,7 @@ const limiter = rateLimit({
 })
 
 const corsOptions = {
-  origin: '*',
+  origin: 'http://161.132.39.183:80',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   allowedHeaders: 'Content-Type,Authorization'
