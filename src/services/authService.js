@@ -63,6 +63,8 @@ export const resetPasswordService = async (token,password,passwordConfirm) => {
   user.passwordResetToken=undefined
   user.passwordResetExpires=undefined
   
+  console.log(user)
+
   const userUpdate=await user.save();
 
   return userUpdate

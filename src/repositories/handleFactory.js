@@ -29,7 +29,7 @@ export const getOne= (model)=>async (filter,popOptions,selectOptions,popSelect) 
     return query
 }
 export const getAll=(model)=>async (filter,query,popOptions)=>{
-    console.log(model)
+    console.log(filter)
     const features = new APIFeatures(model.find(filter), query,popOptions).execute()
     return features
 }

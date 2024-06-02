@@ -17,7 +17,7 @@ export const listarModuloRequerimiento = catchAsync(async(req,res,next)=>{
 export const obtenerModuloRequerimiento = catchAsync(async(req,res,next)=>{
     const _id = req.params.id
 
-    if (requireField(_id,nombre)) {
+    if (requireField(_id)) {
         return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
     }
     const data=await moduloRequerimientoService.obtenerModuloRequerimientoService(_id)

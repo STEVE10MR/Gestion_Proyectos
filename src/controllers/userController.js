@@ -19,6 +19,8 @@ export const obtenerInformacion = catchAsync(async(req,res,next)=>{
 export const registrarUsuario= catchAsync(async (req,res,next)=>{
 
   const {email ,firtName,lastName} = req.body
+
+  console.log(email ,firtName,lastName)
   if(requireField(email,firtName,lastName)){
     return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
   }
@@ -66,7 +68,6 @@ export const registrarUsuario= catchAsync(async (req,res,next)=>{
 })
 
 export const obtenerUsuario = catchAsync(async(req,res,next)=>{
-
   let _id = req.params.id
 
   const data=await userService.obtenerUserService(_id)
@@ -128,17 +129,31 @@ export const editarPasswordUsuario = catchAsync(async (req, res, next) => {
 
 export const editarNameUsuario = catchAsync(async(req,res,next)=>{
   let _id = req.params.id
-  const {firtsName , lastName} = req.body
+  const {firtName , lastName} = req.body
 
-  console.log(firtsName , lastName)
-  if(requireField(_id,firtsName,lastName)){
+  console.log(firtName , lastName)
+  if(requireField(_id,firtName,lastName)){
     return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
   }
   
-  const data=await userService.editarNameUserService(_id,firtsName,lastName)
+  const data=await userService.editarNameUserService(_id,firtName,lastName)
 
   resSend(res,{statusCode:201,status:"success",data})
 })
+
+
+export const editarUsuario = catchAsync(async(req,res,next)=>{
+  let _id = req.params.id
+  const {firtName , lastName} = req.body
+  console.log(req.body)
+  if(requireField(_id,firtName,lastName)){
+    return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
+  }
+  const data=await userService.editarUserService(_id,firtName,lastName)
+
+  resSend(res,{statusCode:201,status:"success",data})
+})
+
 
 export const editarRoleUser = catchAsync(async(req,res,next)=>{
   let _id = req.params.id

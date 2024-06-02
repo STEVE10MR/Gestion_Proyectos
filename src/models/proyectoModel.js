@@ -25,11 +25,18 @@ const proyectoSchema = new Schema({
         require:true,
         minlength:0,
         maxlength:150
+    },
+    fechaInicio: {
+        type: Schema.Types.Date,
+        default: Date.now
+    },
+    fechaFin: {
+        type: Schema.Types.Date
     }
 })
 
 proyectoSchema.methods.getFields = function(){
-    return ['metodologia_id','estado_id','nombre','descripcion']
+    return ['metodologia_id','estado_id','nombre','descripcion','fechaInicio','fechaFin']
 }
 
 export default connection().model('proyecto', proyectoSchema);

@@ -16,17 +16,21 @@ const signToken = id => {
 };
 
 const createSendToken = (user, statusCode, res) => {
+    res.clearCookie('jwt');
+    res.clearCookie('user-role');
     const token = signToken(user._id);
     const cookieOptions = {
       expires: new Date(
         Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
       ),
-      httpOnly: true
+      httpOnly: false,
+      secure: false, 
+      sameSite: 'Lax'
     };
     if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
   
     res.cookie('jwt', token, cookieOptions);
-
+    res.cookie('user-role',user.role,cookieOptions)
     user.password = undefined;
     
 
@@ -44,7 +48,7 @@ const createSendToken = (user, statusCode, res) => {
 
 export const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
-  console.log(email, password )
+
   if (requireField(email,password)) {
     return next(new appError(translatorNext(req,'ERROR_LOGIN_PROVIDE_EMAIL_PASSWORD'), 400));
   }
@@ -113,6 +117,7 @@ export const resetPassword = catchAsync(async (req, res, next) => {
   if(requireField(req.params.token,password,passwordConfirm)) {
     return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
   }
+  console.log(password,passwordConfirm)
   const user = await authService.resetPasswordService(req.params.token,password,passwordConfirm)
 
   if(typeof user === "string"){

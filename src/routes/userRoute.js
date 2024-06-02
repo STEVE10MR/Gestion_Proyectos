@@ -33,8 +33,8 @@ router.patch('/actualizarName',userController.obtenerInformacion,userController.
 
 
 router.route('/:id')
+.patch(userController.editarUsuario)
 .get(userController.obtenerUsuario)
-
 
 router.patch('/:id/activar',userController.activarUsuario)
 router.patch('/:id/desactivar',userController.desactivarUsuario)

@@ -14,13 +14,13 @@ export const listarProyecto = catchAsync(async(req,res,next)=>{
 })
 
 export const registrarProyecto = catchAsync(async(req,res,next)=>{
-    const {estado_id,nombre,descripcion,fechaFin} = req.body
+    const {estado_id,metodologia_id,nombre,descripcion,fechaInicio,fechaFin} = req.body
 
-    if (requireField(nombre)) {
+    if (requireField(estado_id,metodologia_id,nombre,descripcion,fechaFin)) {
         return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
       }
 
-    const data=await proyectoService.registrarProyectoService(estado_id,nombre,descripcion,fechaFin)
+    const data=await proyectoService.registrarProyectoService(estado_id,metodologia_id,nombre,descripcion,fechaInicio,fechaFin)
 
     resSend(res,{statusCode:201,status:"success",data})
 })

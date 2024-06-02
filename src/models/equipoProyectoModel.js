@@ -6,11 +6,12 @@ const Schema = mongoose.Schema;
 const equipoProyectoSchema = new Schema({
     user_id:{
         type: Schema.Types.ObjectId,
-        ref:'user',
-        require:true
+        unique:true,
+        ref:'user'
     },
     rolEquipo_id:{
         type: Schema.Types.ObjectId,
+        unique:true,
         ref:'rolequipo',
         require:true
     },

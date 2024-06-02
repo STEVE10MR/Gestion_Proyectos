@@ -11,6 +11,7 @@ import resetUrl from '../utils/resetUrl.js';
 export const registrarMetodologia= catchAsync(async (req,res,next)=>{
 
   const {nombre,descripcion} = req.body
+  console.log(nombre,descripcion)
   if(requireField(nombre,descripcion)){
     return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
   } 

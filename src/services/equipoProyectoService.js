@@ -7,7 +7,7 @@ export const crearEquipoProyectoService =async(proyecto_id,rolEquipo_id,email,fi
     userObject.equipoProyecto = equipoProyecto
     return userObject
 }
-export const agregarEquipoProyectoService =async(proyecto_id,rolEquipo_id,user_id)=>{
+export const agregarEquipoProyectoService =async(proyecto_id,user_id)=>{
 
     const userObject = await userService.obtenerUserService(user_id)
 
@@ -15,7 +15,7 @@ export const agregarEquipoProyectoService =async(proyecto_id,rolEquipo_id,user_i
         return {messageError:'ERROR_MESSAGE'} 
     }
 
-    const EquipoProyecto = await equipoProyectoRepository.crearEquipoProyectoRepository({user_id:userObject._id,proyecto_id,rolEquipo_id})
+    const EquipoProyecto = await equipoProyectoRepository.crearEquipoProyectoRepository({user_id:userObject._id,proyecto_id,rolEquipo_id:'6658bddb9fc818144416fc45'})
 
     return {user:userObject,EquipoProyecto}
 }
@@ -27,6 +27,11 @@ export const eliminarEquipoProyectoService =async(_id)=>{
 export const listarEquipoProyectoService = async (body,query,popOptions)=>{
     let filter= undefined
     if(body) filter = {...body}
+    return await equipoProyectoRepository.listaEquipoProyectoRepository(filter,query,popOptions) 
+}
+export const listarEquipoJefeDeProyectoService = async (body,query,popOptions)=>{
+    let filter= undefined
+    if(body) filter = {rolEquipo_id:'6658bddb9fc818144416fc45'}
     
     return await equipoProyectoRepository.listaEquipoProyectoRepository(filter,query,popOptions) 
 }

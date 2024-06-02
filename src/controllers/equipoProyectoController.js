@@ -70,23 +70,37 @@ export const agregarEquipoProyecto = catchAsync(async(req,res,next)=>{
   resSend(res,{statusCode:201,status:"success",data})
 })
 
-export const editarEquipoProyecto = catchAsync(async(req,res,next)=>{
-  const {id:_id} = req.params
-  const {proyecto_id,rolEquipo_id} = req.body
+export const agregarEquipoJefedeProyecto = catchAsync(async(req,res,next)=>{
+  const proyecto_id = req.proyecto_id
+  const {user_id} = req.body
 
-  if(requireField(_id,proyecto_id,rolEquipo_id)){
+  if(requireField(proyecto_id,user_id)){
     return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
   }
 
-  const data=await equipoProyectoService.editarEquipoProyectoService(_id,proyecto_id,rolEquipo_id)
+  const data=await equipoProyectoService.agregarEquipoProyectoService(proyecto_id,user_id)
+
+  resSend(res,{statusCode:201,status:"success",data})
+})
+
+
+export const editarEquipoProyecto = catchAsync(async(req,res,next)=>{
+  const {id:_id} = req.params
+  const {rolEquipo_id} = req.body
+
+  if(requireField(_id,rolEquipo_id)){
+    return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
+  }
+
+  const data=await equipoProyectoService.editarEquipoProyectoService(_id,rolEquipo_id)
 
   resSend(res,{statusCode:201,status:"success",data})
 })
 
 export const eliminarEquipoProyecto = catchAsync(async (req,res,next)=>{
 
-  const {id:_id} = req.params
-
+  const {idEquipoProyecto:_id} = req.params
+  console.log(_id)
   if(requireField(_id)){
     return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
   }
@@ -100,20 +114,27 @@ export const eliminarEquipoProyecto = catchAsync(async (req,res,next)=>{
 export const listarEquipoProyecto = catchAsync(async (req,res,next)=>{
   let filter = {...req.body}
   
-  const data=await equipoProyectoService.listarEquipoProyectoService(filter,req.query)
+  const data=await equipoProyectoService.listarEquipoProyectoService(filter,req.query,'user_id rolEquipo_id')
+  resSend(res,{statusCode:201,status:"success",data})
+    
+})
+
+export const listarEquipoJefedeProyecto = catchAsync(async (req,res,next)=>{
+  let filter = undefined
+  const data=await equipoProyectoService.listarEquipoJefeDeProyectoService(filter,req.query,'user_id rolEquipo_id')
   resSend(res,{statusCode:201,status:"success",data})
     
 })
 
 export const obtenerEquipoProyecto = catchAsync(async (req,res,next)=>{
 
-    const {id} = req.params
+    const {idEquipoProyecto} = req.params
 
-    if(requireField(id)){
+    if(requireField(idEquipoProyecto)){
         return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
     }
     
-    const data=await equipoProyectoService.obtenerEquipoProyectoService(id)
+    const data=await equipoProyectoService.obtenerEquipoProyectoService(idEquipoProyecto)
     resSend(res,{statusCode:201,status:"success",data})
       
 })
@@ -126,19 +147,18 @@ export const listarEquipoProyectoPorUsuariorProyecto  = catchAsync(async (req,re
   if(requireField(proyecto_id)){
     return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
   }
-  const data=await equipoProyectoService.listarEquipoProyectoService({proyecto_id},req.query,"rolEquipo_id user_id proyecto_id")
+  const data=await equipoProyectoService.listarEquipoProyectoService({proyecto_id},req.query,"user_id proyecto_id")
   resSend(res,{statusCode:201,status:"success",data})
     
 })
 
 export const listarEquipoProyectoPorUsuario  = catchAsync(async (req,res,next)=>{
 
-  const {id:user_id} = req.params
-
+  const {_id:user_id} = req.user
   if(requireField(user_id)){
     return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
   }
-  const data=await equipoProyectoService.listarEquipoProyectoService({user_id},req.query,"rolEquipo_id proyecto_id")
+  const data=await equipoProyectoService.listarEquipoProyectoService({user_id},req.query,"rolEquipo_id")
   resSend(res,{statusCode:201,status:"success",data})
     
 })

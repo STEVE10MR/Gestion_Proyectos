@@ -6,8 +6,8 @@ export const listarProyectoService  = async (body,query,popOptions)=>{
     if(body) filter = {...body}
     return await proyectoRepository.listaProyectoRepository(filter,query,popOptions)
 }
-export const registrarProyectoService = async(estado_id,nombre,descripcion,fechaFin)=>{
-    return await proyectoRepository.crearProyectoRepository({estado_id,nombre,descripcion,fechaFin})
+export const registrarProyectoService = async(estado_id,metodologia_id,nombre,descripcion,fechaInicio,fechaFin)=>{
+    return await proyectoRepository.crearProyectoRepository({estado_id,metodologia_id,nombre,descripcion,fechaInicio,fechaFin})
 }
 export const obtenerProyectoService = async(_id)=>{
     return await proyectoRepository.obtenerProyectoRepository({_id})

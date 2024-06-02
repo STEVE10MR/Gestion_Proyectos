@@ -10,7 +10,19 @@ router.route('/')
 //.post(equipoProyectoController.registrarEquipoProyecto)
 .post(equipoProyectoController.agregarEquipoProyecto)
 
-router.route("/:id")
+router.route('/add-project-manager')
+.post(equipoProyectoController.agregarEquipoJefedeProyecto)
+
+router.route('/list-project-manager')
+.get(equipoProyectoController.listarEquipoJefedeProyecto)
+
+router.route('/list-role')
+.get(equipoProyectoController.listarEquipoProyectoPorUsuario)
+
+router.route('/list-project')
+.get(equipoProyectoController.listarEquipoProyectoPorUsuariorProyecto)
+
+router.route("/:idEquipoProyecto")
 .get(equipoProyectoController.obtenerEquipoProyecto)
 .patch(equipoProyectoController.editarEquipoProyecto)
 .delete(equipoProyectoController.eliminarEquipoProyecto)

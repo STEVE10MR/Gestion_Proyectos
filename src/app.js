@@ -10,23 +10,46 @@ import i18next from './config/supportedLngs.js';
 import i18nextMiddleware from 'i18next-express-middleware';
 import globalErrorHandler from './controllers/errorController.js';
 import routers from './routes/index.js';
-
-
+import cookieParser from 'cookie-parser'
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, 
-	limit: 100,
+	limit: 1000,
 	message: "ERROR_LIMIT"
 })
 
+const corsOptions = {
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  allowedHeaders: 'Content-Type,Authorization'
+};
+
 const app = express()
 
-app.use(helmet())
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+    crossOriginEmbedderPolicy: false,
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "*"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:"],
+        connectSrc: ["'self'", "*"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"]
+      }
+    }
+  })
+);
 
 app.use('/api',limiter)
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use(express.json({ limit: '10kb' }));
+
+app.use(cookieParser())
 
 app.use(mongoSanitize())
 

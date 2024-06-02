@@ -13,7 +13,7 @@ export const registrarFaseService = async(metodologia_id,nombre,descripcion)=>{
     return await faseRepository.crearFaseRepository({metodologia_id,nombre,descripcion})
 }
 export const editarFaseService = async(_id,nombre,descripcion)=>{
-    return await faseRepository.editarFaseRepository({_id},{metodologia_id,nombre,descripcion})
+    return await faseRepository.editarFaseRepository({_id},{nombre,descripcion})
 }
 export const obtenerFaseService = async(_id)=>{
     return await faseRepository.obtenerFaseRepository(_id)

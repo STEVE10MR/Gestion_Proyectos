@@ -15,6 +15,10 @@ export default catchAsync(async (req, res, next) => {
     ) {
       token = req.headers.authorization.split(' ')[1];
     }
+
+    if(req.cookies.jwt){
+      token = req.cookies.jwt
+    }
   
     if (!token) {
       return next(
@@ -46,6 +50,19 @@ export default catchAsync(async (req, res, next) => {
     //true
 
     req.user = currentUser;
+
+    res.clearCookie('user-role');
+    const cookieOptions = {
+      expires: new Date(
+        Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+      ),
+      httpOnly: false,
+      secure: false, 
+      sameSite: 'Lax'
+    };
+    if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  
+    res.cookie('user-role',currentUser.role,cookieOptions)
 
     next();
 })

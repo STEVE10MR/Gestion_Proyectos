@@ -34,12 +34,13 @@ class DatabaseConnect {
         })
     }
     replaceUriMongo(...values){
-        console.log(...values)
-        let uri = process.env.NODE_ENV === "development" ? process.env.MONGO_URI_LOCAL : process.env.MONGO_URI_CLOUD
+ 
+        let uri = process.env.NODE_ENV === "development" ? process.env.MONGO_URI_LOCAL : process.env.NODE_ENV === "alfa" ? process.env.MONGO_URI_CLOUD : process.env.MONGO_URI_LOCAL
 
-        uri = uri.replace("<<name>>",values[0])
-        uri = uri.replace("<<password>>",values[1])
-        uri = uri.replace("<<nameDatabase>>",values[2])
+        uri = uri.replaceAll("<<user>>",values[0])
+        uri = uri.replaceAll("<<password>>",values[1])
+        uri = uri.replaceAll("<<nameDatabase>>",values[2])
+
 
         return uri
     }

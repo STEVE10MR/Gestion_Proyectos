@@ -22,6 +22,14 @@ export const crearUserService = async (email ,firtName,lastName)=>{
   return {user:userUpdate , password , token}
 }
 
+export const editarUserService  = async(_id,firtName,lastName)=>{
+
+  const user=await userRepository.editarUser({_id},{name:`${firtName} ${lastName}`})
+
+  return user
+}
+
+
 export const editarNameUserService  = async(_id,firtName,lastName)=>{
 
   const user=await userRepository.editarUser({_id},{name:`${firtName} ${lastName}`})
