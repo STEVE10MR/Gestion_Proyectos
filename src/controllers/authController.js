@@ -49,16 +49,18 @@ const createSendToken = (user, statusCode, res) => {
 export const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
+  console.log('1',email, password)
+
   if (requireField(email,password)) {
     return next(new appError(translatorNext(req,'ERROR_LOGIN_PROVIDE_EMAIL_PASSWORD'), 400));
   }
 
   const user = await authService.loginService(email,password)
-
+  console.log('2',user)
   if(typeof user === "string"){
     return next(new appError(translatorNext(req,user), 400));
   }
- 
+  console.log('3',user)
   createSendToken(user, 200, res);
 });
 
