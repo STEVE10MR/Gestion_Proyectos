@@ -10,36 +10,22 @@ import i18next from './config/supportedLngs.js';
 import i18nextMiddleware from 'i18next-express-middleware';
 import globalErrorHandler from './controllers/errorController.js';
 import routers from './routes/index.js';
-import cookieParser from 'cookie-parser';
-
-const app = express();
+import cookieParser from 'cookie-parser'
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 1000,
-  message: "ERROR_LIMIT"
-});
+	windowMs: 15 * 60 * 1000, 
+	limit: 1000,
+	message: "ERROR_LIMIT"
+})
 
-// Configuración dinámica de CORS
-const corsOptionsDelegate = (req, callback) => {
-  let corsOptions;
-  if (req.header('Origin')) {
-    corsOptions = {
-      origin: req.header('Origin'),
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-      credentials: true,
-      allowedHeaders: ['Content-Type', 'Authorization']
-    };
-  } else {
-    corsOptions = { origin: false }; // Si no hay origen, no permitir CORS
-  }
-  callback(null, corsOptions);
+const corsOptions = {
+  origin: 'http://161.132.39.183',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
-app.use(cors(corsOptionsDelegate));
-
-// Enable pre-flight requests for all routes
-app.options('*', cors(corsOptionsDelegate));
+const app = express()
 
 app.use(
   helmet({
@@ -58,13 +44,15 @@ app.use(
   })
 );
 
-app.use('/api', limiter);
+app.use('/api',limiter)
+
+app.use(cors(corsOptions));
 
 app.use(express.json({ limit: '10kb' }));
 
-app.use(cookieParser());
+app.use(cookieParser())
 
-app.use(mongoSanitize());
+app.use(mongoSanitize())
 
 app.use(hpp({
   whitelist: [
@@ -75,10 +63,10 @@ app.use(hpp({
     'difficulty',
     'price'
   ]
-}));
+}))
 
-app.use(xss());
-app.use(i18nextMiddleware.handle(i18next));
+app.use(xss())
+app.use(i18nextMiddleware.handle(i18next))
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -87,10 +75,5 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/v1', routers);
 
 app.use(globalErrorHandler);
-
-const port = process.env.PORT || 3000;
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server running on port ${port}`);
-});
 
 export default app;
