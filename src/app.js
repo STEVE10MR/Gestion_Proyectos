@@ -70,7 +70,7 @@ app.use(hpp({
 app.use(xss())
 app.use(i18nextMiddleware.handle(i18next))
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'alfa') {
   app.use(morgan('dev'));
 }
 
