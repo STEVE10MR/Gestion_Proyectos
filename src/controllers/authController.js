@@ -19,6 +19,7 @@ const createSendToken = (user, statusCode, res) => {
     res.clearCookie('jwt');
     res.clearCookie('user-role');
     const token = signToken(user._id);
+
     const cookieOptions = {
       expires: new Date(
         Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -27,10 +28,12 @@ const createSendToken = (user, statusCode, res) => {
       secure: false, 
       sameSite: 'Lax'
     };
+    
     if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
   
     res.cookie('jwt', token, cookieOptions);
     res.cookie('user-role',user.role,cookieOptions)
+
     user.password = undefined;
     
 
