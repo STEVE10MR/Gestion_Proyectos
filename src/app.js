@@ -19,7 +19,9 @@ const limiter = rateLimit({
 })
 
 const corsOptions = {
-  origin: '*',
+  origin: (origin, callback) => {
+    callback(null, true);
+  },
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   //allowedHeaders: ['Content-Type', 'Authorization']
