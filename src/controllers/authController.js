@@ -20,8 +20,9 @@ const createSendToken = (user, statusCode, res) => {
     res.clearCookie('user-role');
     const token = signToken(user._id);
 
-    console.log(Date.now())
-    console.log(process.env.JWT_COOKIE_EXPIRES_IN)
+    console.log(new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ))
 
     const cookieOptions = {
       expires: new Date(
