@@ -104,16 +104,6 @@ export const desactivarUserService = async(_id)=>{
 
 
 
-
-
-
-
-
-
-
-
-
-
 export const editarRoleUserService  = async(_id,role)=>{
 
   if(!(["user","support"].includes(role))){

@@ -5,7 +5,7 @@ import getTimeMinutes from '../utils/getTimeMinutes.js';
 
 export const loginService = async (email,password) => {
 
-  const user = await userRepository.obtenerUser({ email },null,"+password -passwordChangedAt -passwordResetExpires -passwordResetToken -updatedAt -createdAt -__v -_id");
+  const user = await userRepository.obtenerUser({ email },null,"+password -passwordChangedAt -passwordResetExpires -passwordResetToken -updatedAt -createdAt -__v");
 
   if (!user || !(await user.correctPassword(password, user.password))) {
     return 'ERROR_LOGIN_INCORRECT'
