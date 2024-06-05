@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken';
 
 
 export default catchAsync(async (req, res, next) => {
-    console.log('Midleware Cookie',req.cookies.jwt)
+    console.log('Midleware Cookie 1',req.cookies.jwt)
     let token;
     if (
       req.headers.authorization &&
@@ -19,6 +19,7 @@ export default catchAsync(async (req, res, next) => {
 
     if(req.cookies.jwt){
       token = req.cookies.jwt
+      console.log('Midleware Cookie 2',token)
     }
   
     if (!token) {
@@ -26,9 +27,10 @@ export default catchAsync(async (req, res, next) => {
         new appError(translatorNext(req,'ERROR_NOT_TOKEN'), 401)
       );
     }
-  
+    console.log('Midleware Cookie 3',token)
+    console.log('Midleware Cookie 4', process.env.JWT_SECRET)
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-
+    console.log('Midleware Cookie 5',decoded)
     const currentUser = await userRepository.obtenerUser({_id:decoded.id},undefined,'');
     if (!currentUser) {
       return next(
@@ -47,16 +49,6 @@ export default catchAsync(async (req, res, next) => {
     }
 
     req.user = currentUser;
-
-    const cookieOptions = {
-      expires: new Date(
-        Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-      ),
-      httpOnly: true,
-      secure: false, 
-      sameSite: 'Lax'
-    };
-    if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
-  
+    console.log('Midleware Cookie 6',req.user)
     next();
 })
