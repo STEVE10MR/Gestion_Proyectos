@@ -55,6 +55,7 @@ const createSendToken = (user, statusCode, res) => {
 export const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
+  console.log('User 1',email, password)
 
   if (requireField(email,password)) {
     return next(new appError(translatorNext(req,'ERROR_LOGIN_PROVIDE_EMAIL_PASSWORD'), 400));
@@ -65,7 +66,8 @@ export const login = catchAsync(async (req, res, next) => {
   if(typeof user === "string"){
     return next(new appError(translatorNext(req,user), 400));
   }
-
+  console.log('User 2',user)
+  console.log('Usuario Midleware Cookie',req.cookies.jwt)
   createSendToken(user, 200, res);
 });
 

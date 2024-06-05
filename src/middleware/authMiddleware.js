@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken';
 
 
 export default catchAsync(async (req, res, next) => {
-    console.log(req.cookies)
+    console.log('Midleware Cookie',req.cookies.jwt)
     let token;
     if (
       req.headers.authorization &&
