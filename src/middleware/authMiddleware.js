@@ -29,7 +29,7 @@ export default catchAsync(async (req, res, next) => {
   
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
-    const currentUser = await userRepository.obtenerUser({_id:decoded.id});
+    const currentUser = await userRepository.obtenerUser({_id:decoded.id},undefined,'');
     if (!currentUser) {
       return next(
         new appError(translatorNext(req,'ERROR_USER_NOT_EXIST'),401
@@ -45,10 +45,6 @@ export default catchAsync(async (req, res, next) => {
         )
       );
     }
-    //get miembroCambio
-    //false
-    //get meimbroProyecto
-    //true
 
     req.user = currentUser;
 
@@ -62,7 +58,5 @@ export default catchAsync(async (req, res, next) => {
     };
     if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
   
-    res.cookie('user-role',currentUser.role,cookieOptions)
-
     next();
 })

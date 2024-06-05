@@ -6,7 +6,7 @@ import sendEmail from '../utils/sendEmail.js';
 import translatorNext from '../utils/translatorNext.js';
 import resetUrl from '../utils/resetUrl.js';
 import requireField from '../utils/requireField.js';
-
+import resSend from '../utils/resSend.js';
 
 const signToken = id => {
   console.log(process.env.JWT_SECRET)
@@ -67,6 +67,21 @@ export const login = catchAsync(async (req, res, next) => {
   }
 
   createSendToken(user, 200, res);
+});
+
+
+export const verifySession = catchAsync(async (req, res, next) => {
+
+  req.user.d = undefined;
+  req.user.passwordChangedAt= undefined;
+  req.user.passwordResetExpires= undefined;
+  req.user.passwordResetToken= undefined;
+  req.user.updatedAt= undefined;
+  req.user.createdAt= undefined;
+  req.user.__v= undefined;
+  req.user._id= undefined;
+
+  resSend(res,{statusCode:201,status:"success",data:req.user})
 });
 
 export const forgotPassword = catchAsync(async (req, res, next) => {
