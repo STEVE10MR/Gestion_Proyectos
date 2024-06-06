@@ -19,10 +19,6 @@ const createSendToken = (user, statusCode, res) => {
 
     const token = signToken(user._id);
 
-    console.log(new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-    ))
-
     const cookieOptions = {
       expires: new Date(
         Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -159,3 +155,22 @@ export const validateEmailAddress = catchAsync(async (req, res, next) => {
   }
   createSendToken(user, 200, res);
 });
+
+export const logout = catchAsync(async (req, res, next) => {
+
+  const cookieOptions = {
+    expires: new Date(
+      Date.now(0)
+    ),
+    httpOnly: true,
+    secure: true, 
+    sameSite: 'None'
+  };
+  
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  
+  res.cookie('jwt', '', cookieOptions);
+
+  res.status(200).json({ status: 'success' });
+});
+
