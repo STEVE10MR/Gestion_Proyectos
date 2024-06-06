@@ -17,7 +17,7 @@ router.route('/miembroCambio/obtenerUsuarios')
 
 router.get('/listar-comite-proyecto',userController.listarMiembroCambio)
 router.get('/listar-equipo-proyecto',userController.listarEquipoProyecto)
-router.get('/listar-proyecto-rol-proyecto',userController.listarProyectoPorRolEquipo)
+router.get('/listar-proyecto-rol-proyecto/:rolEquipo_id',userController.listarProyectoPorRolEquipo)
 
 router.post('/registrarUsuario',userController.registrarUsuario)
 router.route('/informacion')
