@@ -83,6 +83,9 @@ export const getCountArrayAgregate=(model)=>async(fieldName, fieldValue,name)=>{
         } }
     ])
 }
+export const getModelAggregate=(model)=>{
+    return model
+}
 export const getModel=(model)=>{
     return new model()
 }

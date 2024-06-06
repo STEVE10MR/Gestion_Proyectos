@@ -31,7 +31,6 @@ export const listarMiembroCambioService = async (body,query,popOptions)=>{
     
     return await miembroCambioRepository.listaMiembroCambioRepository(filter,query,popOptions)
 }
-
 export const obtenerMiembroCambioService = async(_id)=>{
     return await miembroCambioRepository.obtenerMiembroCambioRepository({_id})
 }

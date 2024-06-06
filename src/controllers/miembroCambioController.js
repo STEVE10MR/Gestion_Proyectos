@@ -92,30 +92,6 @@ export const listarMiembroCambios = catchAsync(async (req,res,next)=>{
     
 })
 
-export const listarMiembrosCambioPorUsuariorProyecto  = catchAsync(async (req,res,next)=>{
-
-  const proyecto_id = req.proyecto_id
-
-  if(requireField(proyecto_id)){
-    return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
-  }
-  const data=await miembroCambioService.listarMiembroCambioService({proyecto_id},req.query,"user_id proyecto_id")
-  resSend(res,{statusCode:201,status:"success",data})
-    
-})
-
-export const listarMiembrosCambioPorUsuario  = catchAsync(async (req,res,next)=>{
-
-  const {id:user_id} = req.params
-
-  console.log(req.params)
-  if(requireField(user_id)){
-    return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
-  }
-  const data=await miembroCambioService.listarMiembroCambioService({user_id},req.query,"proyecto_id")
-  resSend(res,{statusCode:201,status:"success",data})
-    
-})
 
 export const editarMiembroCambio = catchAsync(async(req,res,next)=>{
   const {id:_id} = req.params

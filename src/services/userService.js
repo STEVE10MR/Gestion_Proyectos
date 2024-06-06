@@ -1,6 +1,6 @@
 import * as userRepository from "../repositories/userRepository.js"
-
-
+import * as equipoProyectoService from "./equipoProyectoService.js"
+import * as miembroCambioService from "./miembroCambioService.js"
 
 export const crearUserService = async (email ,firtName,lastName)=>{
 
@@ -68,23 +68,21 @@ export const listarUserService = async (body,query,popOptions)=>{
   
 }
 
-export const listarProyectoMiembroCambioUserService = async (body,query,popOptions)=>{
-  let filter= undefined
-  if(body) filter = {...body}
-  
-  const user=await userRepository.listaUser(filter,query,popOptions)
-
+export const listarMiembroCambioUserService = async (user_id)=>{
+  const user=await equipoProyectoService.listarMiembroCambioUserService({user_id},undefined,"+proyecto_id")
   return user
   
 }
-export const listarEquipoProyectoUserService = async (body,query,popOptions)=>{
-  let filter= undefined
-  if(body) filter = {...body}
-  
-  const user=await userRepository.listaUser(filter,query,popOptions)
+export const listarEquipoProyectoUserService = async (user_id)=>{
 
+  const user=await equipoProyectoService.listarEquipoProyectoUserService(user_id)
   return user
-  
+}
+
+export const listarProyectoPorRolEquipoUserService = async (user_id,rolEquipo_id)=>{
+
+  const user=await equipoProyectoService.listarEquipoProyectoService({user_id,rolEquipo_id},undefined,"+proyecto_id")
+  return user
 }
 
 export const activarUserService = async(_id)=>{

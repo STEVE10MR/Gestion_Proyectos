@@ -24,11 +24,33 @@ export const eliminarEquipoProyectoService =async(_id)=>{
 
     return await equipoProyectoRepository.eliminarEquipoProyectoRepository(_id)
 }
+export const listarEquipoProyectoUserService = async (userId)=>{
+
+    return await equipoProyectoRepository.getModelAggregate.aggregate([
+        { $match: { user_id: userId } },
+        {
+            $group: {
+                _id: "$rolEquipo_id",
+            }
+        },
+        {
+            $project: {
+                rolEquipo_id: "$_id", 
+                _id: 0                
+            }
+        }
+    ])
+    .populate('rolEquipo_id');
+}
+
+
 export const listarEquipoProyectoService = async (body,query,popOptions)=>{
     let filter= undefined
     if(body) filter = {...body}
     return await equipoProyectoRepository.listaEquipoProyectoRepository(filter,query,popOptions) 
 }
+
+
 export const listarEquipoJefeDeProyectoService = async (body,query,popOptions)=>{
     let filter= undefined
     if(body) filter = {rolEquipo_id:'6658bddb9fc818144416fc45'}

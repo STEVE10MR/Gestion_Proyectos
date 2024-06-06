@@ -139,26 +139,3 @@ export const obtenerEquipoProyecto = catchAsync(async (req,res,next)=>{
       
 })
 
-
-export const listarEquipoProyectoPorUsuariorProyecto  = catchAsync(async (req,res,next)=>{
-
-  const proyecto_id = req.proyecto_id
-
-  if(requireField(proyecto_id)){
-    return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
-  }
-  const data=await equipoProyectoService.listarEquipoProyectoService({proyecto_id},req.query,"user_id proyecto_id")
-  resSend(res,{statusCode:201,status:"success",data})
-    
-})
-
-export const listarEquipoProyectoPorUsuario  = catchAsync(async (req,res,next)=>{
-
-  const {_id:user_id} = req.user
-  if(requireField(user_id)){
-    return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
-  }
-  const data=await equipoProyectoService.listarEquipoProyectoService({user_id},req.query,"rolEquipo_id")
-  resSend(res,{statusCode:201,status:"success",data})
-    
-})

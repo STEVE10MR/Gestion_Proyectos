@@ -1,7 +1,5 @@
 import express from "express";
 import * as userController from '../controllers/userController.js';
-import * as miembroCambioController from '../controllers/miembroCambioController.js';
-import * as equipoProyectoController from '../controllers/equipoProyectoController.js';
 import authRole from '../middleware/authRole.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 
@@ -10,10 +8,6 @@ const router = express.Router()
 
 router.use(authMiddleware)
 
-const myFunction = function(req,res,next){
-    req.params.id=req.user._id
-    next()
-}
 
 router.route('/obtenerUsuarios')
 .get(userController.listarUsuarios)
@@ -21,8 +15,9 @@ router.route('/obtenerUsuarios')
 router.route('/miembroCambio/obtenerUsuarios')
 .get(userController.listarUsuarios)
 
-router.get('/listar-comite-proyecto',myFunction,miembroCambioController.listarMiembrosCambioPorUsuario)
-router.get('/listar-equipo-proyecto',myFunction,equipoProyectoController.listarEquipoProyectoPorUsuario)
+router.get('/listar-comite-proyecto',userController.listarMiembroCambio)
+router.get('/listar-equipo-proyecto',userController.listarEquipoProyecto)
+router.get('/listar-proyecto-rol-proyecto',userController.listarProyectoPorRolEquipo)
 
 router.post('/registrarUsuario',userController.registrarUsuario)
 router.route('/informacion')

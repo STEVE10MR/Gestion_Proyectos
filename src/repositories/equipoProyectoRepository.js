@@ -7,3 +7,4 @@ export const editarEquipoProyectoRepository = handleFactory.updateOne(equipoProy
 export const obtenerEquipoProyectoRepository = handleFactory.getOneId(equipoProyectoModel)
 export const listaEquipoProyectoRepository = handleFactory.getAll(equipoProyectoModel)
 export const eliminarEquipoProyectoRepository = handleFactory.clearOne(equipoProyectoModel)
+export const getModelAggregate = handleFactory.getModelAggregate(equipoProyectoModel)
