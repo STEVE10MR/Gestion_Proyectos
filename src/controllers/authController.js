@@ -29,13 +29,12 @@ const createSendToken = (user, statusCode, res) => {
       ),
       httpOnly: true,
       secure: false, 
-      sameSite: 'Lax'
+      sameSite: 'None'
     };
     
     if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
   
     res.cookie('jwt', token, cookieOptions);
-    res.cookie('user-role',user.role,cookieOptions)
 
     user.password = undefined;
     
