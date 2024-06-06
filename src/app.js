@@ -14,7 +14,7 @@ import cookieParser from 'cookie-parser'
 
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, 
-	limit: 1000,
+	limit: 10000,
 	message: "ERROR_LIMIT"
 })
 
