@@ -8,7 +8,6 @@ import jwt from 'jsonwebtoken';
 
 
 export default catchAsync(async (req, res, next) => {
-    console.log('Midleware Cookie 1',req.cookies.jwt)
     let token;
     if (
       req.headers.authorization &&
@@ -27,10 +26,9 @@ export default catchAsync(async (req, res, next) => {
         new appError(translatorNext(req,'ERROR_NOT_TOKEN'), 401)
       );
     }
-    console.log('Midleware Cookie 3',token)
-    console.log('Midleware Cookie 4', process.env.JWT_SECRET)
+
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-    console.log('Midleware Cookie 5',decoded)
+
     const currentUser = await userRepository.obtenerUser({_id:decoded.id},undefined,'');
     if (!currentUser) {
       return next(
@@ -49,6 +47,5 @@ export default catchAsync(async (req, res, next) => {
     }
 
     req.user = currentUser;
-    console.log('Midleware Cookie 6',req.user)
     next();
 })

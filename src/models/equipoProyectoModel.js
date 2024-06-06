@@ -6,7 +6,6 @@ const Schema = mongoose.Schema;
 const equipoProyectoSchema = new Schema({
     user_id:{
         type: Schema.Types.ObjectId,
-        unique:true,
         ref:'user'
     },
     rolEquipo_id:{

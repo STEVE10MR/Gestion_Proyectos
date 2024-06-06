@@ -13,7 +13,7 @@ const rolEquipoSchema = new Schema({
 })
 
 rolEquipoSchema.methods.getFields = function(){
-    return ['nombre']
+    return ['_id','nombre']
 }
   
 

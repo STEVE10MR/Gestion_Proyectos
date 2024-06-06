@@ -1,5 +1,6 @@
 import * as equipoProyectoRepository from "../repositories/equipoProyectoRepository.js"
 import * as userService from "../services/userService.js"
+import mongoose from "mongoose"
 
 export const crearEquipoProyectoService =async(proyecto_id,rolEquipo_id,email,firtName,lastName)=>{
     const userObject = await userService.crearUserService(email,firtName,lastName)
@@ -27,20 +28,34 @@ export const eliminarEquipoProyectoService =async(_id)=>{
 export const listarEquipoProyectoUserService = async (userId)=>{
 
     return await equipoProyectoRepository.getModelAggregate.aggregate([
-        { $match: { user_id: userId } },
-        {
-            $group: {
-                _id: "$rolEquipo_id",
-            }
-        },
-        {
-            $project: {
-                rolEquipo_id: "$_id", 
-                _id: 0                
-            }
+    { $match: { user_id: new mongoose.Types.ObjectId(userId) } },
+    {
+        $group: {
+            _id: "$rolEquipo_id",
         }
-    ])
-    .populate('rolEquipo_id');
+    },
+    { 
+        $project: {
+        rolEquipo_id: "$_id",
+        _id: 0
+        }
+    },
+    {
+        $lookup: {
+            from: 'rolequipos',
+            localField: 'rolEquipo_id',
+            foreignField: '_id',
+            as: 'rolEquipo'
+        }
+    },{
+        $unwind:"$rolEquipo"
+    },
+    {
+        $project: {
+            id: "$rolEquipo._id",
+            nombre: "$rolEquipo.nombre"
+        }
+    }])
 }
 
 
