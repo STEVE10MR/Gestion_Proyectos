@@ -11,7 +11,7 @@ import resetUrl from '../utils/resetUrl.js';
 export const crearEcs = catchAsync(async(req,res,next)=>{
     const {id,fase_id} = req.params
     const {estado_id,nombre,descripcion,tipoEcs,tipoTecnologia,version,fechaFin} = req.body
-
+    console.log(id,estado_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia,version,fechaFin)
     if(requireField(id,estado_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia,version,fechaFin)){
       return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
     }
@@ -26,7 +26,7 @@ export const obtenerEcs = catchAsync(async(req,res,next)=>{
   if(requireField(id)){
     return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
   }
-  const data=await ecsService.obtenerEcsService(id)
+  const data=await ecsService.obtenerEcsService(id,'estado_id')
 
   resSend(res,{statusCode:201,status:"success",data})
 })
@@ -37,7 +37,7 @@ export const editarEcs = catchAsync(async(req,res,next)=>{
 
     const {estado_id,nombre,descripcion,tipoEcs,tipoTecnologia} = req.body
 
-
+    console.log(user_id,ecs_id,estado_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia)
     if(requireField(user_id,ecs_id,estado_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia)){
       return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
     }

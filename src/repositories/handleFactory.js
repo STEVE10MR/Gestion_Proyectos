@@ -17,7 +17,7 @@ const filterObject = (body,filterFields)=>{
 }
 
 export const getOneId= (model)=>async (id,popOptions) =>{
-    let query = model.findById(id)
+    let query = model.findById(id).populate(popOptions)
     //if(popOptions) query = query.populate(popOptions)
     return query
 }
