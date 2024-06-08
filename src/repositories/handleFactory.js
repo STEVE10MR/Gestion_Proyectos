@@ -25,7 +25,7 @@ export const getOne= (model)=>async (filter,popOptions,selectOptions,popSelect) 
     let query = model.findOne(filter)
     if(selectOptions) query = query.select(selectOptions)
     if(popSelect) query = query.populate({path:popOptions,select:popSelect})
-    else if(popOptions) query = query.populate(popOptions)
+    else query = query.populate(popOptions)
     return query
 }
 export const getAll=(model)=>async (filter,query,popOptions)=>{

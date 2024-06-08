@@ -14,7 +14,7 @@ export const agregarFaseCronogramaService = async(_id,fase_id)=>{
     }
 }
 export const obtenerCronogramaService = async(proyecto_id)=>{
-    return await cronogramaRepository.obtenerCronogramaRepository({proyecto_id})
+    return await cronogramaRepository.obtenerCronogramaRepository({proyecto_id},'cronogramaFase.fase_id')
 }
 export const editarCronogramaService = async(_id,estado_id,nombre,descripcion,fechaFin)=>{
     return await cronogramaRepository.editarCronogramaRepository({_id},{estado_id,nombre,descripcion,fechaFin})
