@@ -6,6 +6,7 @@ import authMiddleware from '../middleware/authMiddleware.js';
 
 import miembroCambioRoute from './miembroCambioRoute.js';
 import equipoProyectoRoute from './equipoProyectoRoute.js';
+import cronogramaRoute from './cronogramaRoute.js';
 const router = express.Router()
 
 const myFunction = function(req,res,next){
@@ -23,6 +24,7 @@ router.route('/:id')
 .patch(proyectoController.editarProyecto)
 .get(proyectoController.obtenerProyecto)
 
+router.use('/:id/cronograma',myFunction,cronogramaRoute)
 router.use('/:id/miembroCambio',myFunction,miembroCambioRoute)
 router.use('/:id/equipoProyecto',myFunction,equipoProyectoRoute)
 router.use('/:id/requerimiento',myFunction,requerimientoRoute)

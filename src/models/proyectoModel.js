@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import {connection} from './connectDatabase.js';
-
+import cronogramaModel from './cronogramaModel.js';
 const Schema = mongoose.Schema;
 
 const proyectoSchema = new Schema({
@@ -11,7 +11,7 @@ const proyectoSchema = new Schema({
     },
     estado_id:{
         type: Schema.Types.ObjectId,
-        ref:'requerimientoModulo',
+        ref:'estado',
         require:true
     },
     nombre:{
@@ -33,6 +33,12 @@ const proyectoSchema = new Schema({
     fechaFin: {
         type: Schema.Types.Date
     }
+})
+
+proyectoSchema.pre('save',async function(next){
+
+    const cronograma = await cronogramaModel.create({proyecto_id:this._id,metodologia_id:this.metodologia_id})
+    next()
 })
 
 proyectoSchema.methods.getFields = function(){

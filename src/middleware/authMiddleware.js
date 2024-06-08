@@ -18,7 +18,6 @@ export default catchAsync(async (req, res, next) => {
 
     if(req.cookies.jwt){
       token = req.cookies.jwt
-      console.log('Midleware Cookie 2',token)
     }
   
     if (!token) {

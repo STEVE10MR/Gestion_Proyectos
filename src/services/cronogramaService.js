@@ -1,4 +1,21 @@
-import * as cronogramaRepository from "../repositories/cronogramaRepository"
+import * as cronogramaRepository from "../repositories/cronogramaRepository.js"
 
-//cronogramaRepository.crearCronograma
 
+export const agregarFaseCronogramaService = async(_id,fase_id)=>{
+    try{
+        const ecsObject=await cronogramaRepository.editarEcsRepository({_id,"cronogramaFase.fase_id":fase_id},{$set:{'cronogramaFase.$.fase_id':fase_id}})
+
+        return ecsObject
+    }
+    catch(err){
+        const ecsObject=await ecsRepository.editarEcsRepository({_id},{$push:{'cronogramaFase':{fase_id}}})
+
+        return ecsObject
+    }
+}
+export const obtenerCronogramaService = async(proyecto_id)=>{
+    return await cronogramaRepository.obtenerCronogramaRepository({proyecto_id})
+}
+export const editarCronogramaService = async(_id,estado_id,nombre,descripcion,fechaFin)=>{
+    return await cronogramaRepository.editarCronogramaRepository({_id},{estado_id,nombre,descripcion,fechaFin})
+}

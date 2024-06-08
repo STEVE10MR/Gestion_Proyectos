@@ -32,12 +32,12 @@ export const obtenerEcs = catchAsync(async(req,res,next)=>{
 })
 
 export const editarEcs = catchAsync(async(req,res,next)=>{
+
     const {fase_id,ecs_id} = req.params
     const {_id:user_id} = req.user
 
     const {estado_id,nombre,descripcion,tipoEcs,tipoTecnologia} = req.body
 
-    console.log(user_id,ecs_id,estado_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia)
     if(requireField(user_id,ecs_id,estado_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia)){
       return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
     }
