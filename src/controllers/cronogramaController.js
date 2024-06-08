@@ -10,7 +10,7 @@ export const agregarFaseCronograma = catchAsync(async(req,res,next)=>{
     const {CronogramaId} = req.params
     const {faseId}=req.body
 
-    if (requireField(id,faseId)) {
+    if (requireField(CronogramaId,faseId)) {
         return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
     }
 

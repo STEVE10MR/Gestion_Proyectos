@@ -3,12 +3,12 @@ import * as cronogramaRepository from "../repositories/cronogramaRepository.js"
 
 export const agregarFaseCronogramaService = async(_id,fase_id)=>{
     try{
-        const ecsObject=await cronogramaRepository.editarEcsRepository({_id,"cronogramaFase.fase_id":fase_id},{$set:{'cronogramaFase.$.fase_id':fase_id}})
+        const ecsObject=await cronogramaRepository.editarCronogramaRepository({_id,"cronogramaFase.fase_id":fase_id},{$set:{'cronogramaFase.$.fase_id':fase_id}})
 
         return ecsObject
     }
     catch(err){
-        const ecsObject=await ecsRepository.editarEcsRepository({_id},{$push:{'cronogramaFase':{fase_id}}})
+        const ecsObject=await cronogramaRepository.editarCronogramaRepository({_id},{$push:{'cronogramaFase':{fase_id}}})
 
         return ecsObject
     }
