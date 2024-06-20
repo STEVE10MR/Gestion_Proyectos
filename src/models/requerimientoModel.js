@@ -11,12 +11,12 @@ const requerimientoFuncionalSchema = new Schema({
     },
     requerimientoModulo_id:{
         type: Schema.Types.ObjectId,
-        ref:'requerimientoModulo',
+        ref:'modulorequerimientofuncional',
         require:true
     },
     estado_id:{
         type: Schema.Types.ObjectId,
-        ref:'requerimientoModulo',
+        ref:'estado',
         require:true
     },
     nombre:{

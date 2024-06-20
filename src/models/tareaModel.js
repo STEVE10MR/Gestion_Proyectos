@@ -4,14 +4,9 @@ import {connection} from './connectDatabase.js';
 const Schema = mongoose.Schema
 
 const tareaSchema = new Schema({
-    version_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'Version_ECS',
-        required: true
-    },
     equipoProyecto_id: {
         type: Schema.Types.ObjectId,
-        ref: 'equipoProyecto_id',
+        ref: 'equipoProyecto',
         required: true
     },
     nombre: {
