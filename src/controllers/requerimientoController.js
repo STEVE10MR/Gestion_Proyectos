@@ -18,13 +18,13 @@ export const listarRequerimiento = catchAsync(async(req,res,next)=>{
 
 export const registrarRequerimiento = catchAsync(async(req,res,next)=>{
     const proyecto_id = req.proyecto_id
-    const {requerimientoModulo_id,estado_id,nombre,descripcion,fechaFin} = req.body
+    const {requerimientoModulo_id,estado_id,nombre,descripcion} = req.body
 
-    if (requireField(requerimientoModulo_id,estado_id,nombre,descripcion,fechaFin,proyecto_id)) {
+    if (requireField(requerimientoModulo_id,estado_id,nombre,descripcion,proyecto_id)) {
         return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
       }
 
-    const data=await RequerimientoService.registrarRequerimientoService(proyecto_id,requerimientoModulo_id,estado_id,nombre,descripcion,fechaFin)
+    const data=await RequerimientoService.registrarRequerimientoService(proyecto_id,requerimientoModulo_id,estado_id,nombre,descripcion)
 
     resSend(res,{statusCode:201,status:"success",data})
 })
@@ -34,15 +34,14 @@ export const editarRequerimiento = catchAsync(async(req,res,next)=>{
     const proyecto_id = req.proyecto_id
 
     const requerimiento_id = req.params.id
-    const {requerimientoModulo_id,estado_id,nombre,descripcion,fechaFin} = req.body
+    const {requerimientoModulo_id,estado_id,nombre,descripcion} = req.body
 
-    console.log(requerimiento_id,requerimientoModulo_id,estado_id,nombre,descripcion,fechaFin,proyecto_id)
 
-    if (requireField(requerimiento_id,requerimientoModulo_id,estado_id,nombre,descripcion,fechaFin,proyecto_id)) {
+    if (requireField(requerimiento_id,requerimientoModulo_id,estado_id,nombre,descripcion,proyecto_id)) {
         return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
     }
 
-    const data=await RequerimientoService.editarRequerimientoService(requerimiento_id,proyecto_id,requerimientoModulo_id,estado_id,nombre,descripcion,fechaFin)
+    const data=await RequerimientoService.editarRequerimientoService(requerimiento_id,proyecto_id,requerimientoModulo_id,estado_id,nombre,descripcion)
 
     resSend(res,{statusCode:201,status:"success",data})
 })
