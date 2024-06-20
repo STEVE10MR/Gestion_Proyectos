@@ -59,10 +59,10 @@ export const listarEquipoProyectoUserService = async (userId)=>{
 }
 
 
-export const listarEquipoProyectoService = async (body,query,popOptions)=>{
+export const listarEquipoProyectoService = async (body,query)=>{
     let filter= undefined
     if(body) filter = {...body}
-    return await equipoProyectoRepository.listaEquipoProyectoRepository(filter,query,popOptions) 
+    return await equipoProyectoRepository.listaEquipoProyectoRepository(filter,query,"user_id rolEquipo_id") 
 }
 
 

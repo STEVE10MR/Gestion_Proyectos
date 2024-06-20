@@ -10,7 +10,7 @@ export const listarRequerimiento = catchAsync(async(req,res,next)=>{
 
     let {id:proyecto_id} = req.params
     let filter = {proyecto_id,...req.body}
-
+    
     const data=await RequerimientoService.listarRequerimientoService(filter,req.query)
 
     resSend(res,{statusCode:201,status:"success",data})

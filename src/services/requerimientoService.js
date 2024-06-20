@@ -1,9 +1,9 @@
 import * as requerimientoRepository from "../repositories/requerimientoRepository.js"
 
-export const listarRequerimientoService  = async (body,query,popOptions)=>{
+export const listarRequerimientoService  = async (body,query)=>{
     let filter= undefined
     if(body) filter = {...body}
-    return await requerimientoRepository.listaRequermientoRepository(filter,query,popOptions)
+    return await requerimientoRepository.listaRequermientoRepository(filter,query,"requerimientoModulo_id estado_id")
 }
 export const registrarRequerimientoService = async(proyecto_id,requerimientoModulo_id,estado_id,nombre,descripcion,fechaFin)=>{
     return await requerimientoRepository.crearRequermientoRepository({requerimientoModulo_id,proyecto_id,estado_id,nombre,descripcion,fechaFin})

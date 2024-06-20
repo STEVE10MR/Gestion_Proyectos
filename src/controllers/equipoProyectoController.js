@@ -112,8 +112,8 @@ export const eliminarEquipoProyecto = catchAsync(async (req,res,next)=>{
 
 
 export const listarEquipoProyecto = catchAsync(async (req,res,next)=>{
-  let filter = {...req.body}
-  
+  let {id:proyecto_id} = req.params
+  let filter = {proyecto_id,...req.body}
   const data=await equipoProyectoService.listarEquipoProyectoService(filter,req.query,'user_id rolEquipo_id')
   resSend(res,{statusCode:201,status:"success",data})
     
