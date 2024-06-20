@@ -16,6 +16,7 @@ const cronogramaSchema = new Schema({
     proyecto_id:{
         type: Schema.Types.ObjectId,
         ref:'proyecto',
+        unique:true,
         require:true
     },
     metodologia_id:{
@@ -27,18 +28,21 @@ const cronogramaSchema = new Schema({
         fase_id:{
             type: Schema.Types.ObjectId,
             ref:'fase',
+            unique:true,
             require:true
         },
         cronogramaEcs:[{
             ecs_id:{
                 type: Schema.Types.ObjectId,
                 ref:'ecs',
+                unique:true,
                 require:true
             },
             miembros:[{
                 rol_id :{
                     type: Schema.Types.ObjectId,
                     ref:'rol',
+                    unique:true,
                     require:true
                 },
                 user_id :{
@@ -53,7 +57,8 @@ const cronogramaSchema = new Schema({
             requerimientos:[{
                 requerimiento_id:{
                     type: Schema.Types.ObjectId,
-                    ref:'rol',
+                    ref:'requerimientofuncional',
+                    unique:true,
                     require:true
                 },
                 user_id :{
@@ -104,6 +109,24 @@ const cronogramaSchema = new Schema({
                 message:"ERROR_PROGRESO_FIN"
             }
         },
+        fechaFin:{
+            type:Schema.Types.Date,
+            validator:{
+                validate:function(value){
+                    return value > this.fechaInicio
+                },
+                message:"ERROR_PROGRESO_FIN"
+            }
+        },
+        fechaInicio:{
+            type:Schema.Types.Date,
+            validator:{
+                validate:function(value){
+                    return value < this.fechaFin
+                },
+                message:"ERROR_PROGRESO_FIN"
+            }
+        }
 
     }],
     progresoInicio :{
@@ -124,14 +147,7 @@ const cronogramaSchema = new Schema({
             validate:validateProgresoFin,
             message:"ERROR_PROGRESO_FIN"
         }
-    },
-    fechaFin:{
-        type:Schema.Types.Date
-    },
-    fechaInicio:{
-        type:Schema.Types.Date
     }
-
 })
 
 cronogramaSchema.methods.getFields = function() {

@@ -7,7 +7,9 @@ import requireField from '../utils/requireField.js';
 
 
 export const listarRequerimiento = catchAsync(async(req,res,next)=>{
-    let filter = {...req.body}
+
+    let {id:proyecto_id} = req.params
+    let filter = {proyecto_id,...req.body}
 
     const data=await RequerimientoService.listarRequerimientoService(filter,req.query)
 

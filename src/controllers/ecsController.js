@@ -47,8 +47,10 @@ export const editarEcs = catchAsync(async(req,res,next)=>{
 })
 
 export const listarEcs = catchAsync(async(req,res,next)=>{
-    let filter = {...req.body}
-
+    
+    const {fase_id} = req.params
+    let filter = {fase_id,...req.body}
+    console.log(filter)
     const data=await ecsService.listarEcsService(filter,req.query)
   
     resSend(res,{statusCode:201,status:"success",data})
@@ -121,7 +123,9 @@ export const agregarVersionEcs = catchAsync(async(req,res,next)=>{
     return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
   }
   const data=await ecsService.agregarVersionService(id,version,fechaFin)
-
+  if(typeof data.messageError === 'string'){
+    return next(new appError(translatorNext(req,data.messageError),400))
+  }
   resSend(res,{statusCode:201,status:"success",data})
 })
 

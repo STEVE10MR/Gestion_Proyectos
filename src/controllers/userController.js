@@ -204,7 +204,7 @@ export const editarRoleUser = catchAsync(async(req,res,next)=>{
   const data=await userService.editarRoleUserService(_id,role)
 
   if(typeof data === 'string'){
-    return next(new appError(req.t(data),400))
+    return next(new appError(translatorNext(req,data),400))
   }
 
   resSend(res,{statusCode:201,status:"success",data})

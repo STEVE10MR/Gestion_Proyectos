@@ -6,6 +6,7 @@ import estadoRoute from "./estadoRoute.js";
 import estadoProblemaRoute from "./estadoProblemaRoute.js";
 import metodologiaRoute from "./metodologiaRoute.js";
 import rolEquipoRoute from "./rolEquipoRoute.js";
+import rolRoute from "./rolRouter.js";
 import proyectoRoute from "./proyectoRoute.js";
 import moduloRequerimientoRoute from "./moduloRequerimientoRoute.js";
 const route = express.Router()
@@ -17,6 +18,7 @@ route.use("/estado",estadoRoute)
 route.use("/estadoproblema",estadoProblemaRoute)
 route.use("/metodologia",metodologiaRoute)
 route.use("/rolequipo",rolEquipoRoute)
+route.use("/rol",rolRoute)
 route.use("/proyecto",proyectoRoute)
 route.use("/moduloRequerimiento",moduloRequerimientoRoute)
 

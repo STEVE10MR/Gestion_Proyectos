@@ -4,9 +4,9 @@ import {connection} from './connectDatabase.js';
 const Schema = mongoose.Schema;
 
 const ecsSchema = new Schema({
-    proyecto_id:{
+    metodologia_id:{
         type: Schema.Types.ObjectId,
-        ref:'proyecto',
+        ref:'metodologia',
         require:true
     },
     fase_id:{

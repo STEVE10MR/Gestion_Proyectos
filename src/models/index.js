@@ -13,6 +13,7 @@ import rolEquipoModel from "./rolEquipoModel.js"
 import userModel from "./userModel.js"
 import estadoProblemasModel from "./estadoProblemasModel.js"
 import tareaModel from "./tareaModel.js"
+import rolModel from "./rolModel.js"
 
 export default {
     cronogramaModel,
@@ -28,5 +29,6 @@ export default {
     userModel,
     proyectoModel,
     estadoProblemasModel,
-    tareaModel
+    tareaModel,
+    rolModel
 }

@@ -54,9 +54,9 @@ export const updateOne=(model)=>async (filter,body,selectOptions,optionsValidato
 
     let validator = { new: true}
 
-    if (optionsValidator) validator = optionsValidator
+    if (optionsValidator) validator = optionsUpdate
 
-    return model.findOneAndUpdate(filter,body,optionsUpdate,{ new: true}).select(selectOptions)
+    return model.findOneAndUpdate(filter,body,optionsValidator).select(selectOptions)
 }
 export const deleteOne=(model)=>async (_id)=>{
     return model.findByIdAndUpdate(_id,{active:false},{ new: true })
