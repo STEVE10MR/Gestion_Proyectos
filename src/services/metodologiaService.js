@@ -1,6 +1,6 @@
 import * as metodologiaRepository from "../repositories/metodologiaRepository.js"
 import * as faseService from "../services/faseService.js"
-
+import * as handleFactory from "../services/handleFactory.js"
 export const listarMetodologiaService  = async (body,query,popOptions)=>{
     let filter= undefined
     if(body) filter = {...body}
@@ -19,6 +19,5 @@ export const editarMetodologiaService = async(_id,nombre,descripcion)=>{
 export const obtenerMetodologiaService = async(_id)=>{
     return await metodologiaRepository.obtenerMetodologiaRepository(_id)
 }
-export const eliminarMetodologiaService = async(_id)=>{
-    return await metodologiaRepository.eliminarMetodologiaRepository(_id)
-}
+export const eliminarMetodologiaService = handleFactory.deleteOne(metodologiaRepository)
+export const activarMetodologiaService = handleFactory.activateOne(metodologiaRepository)

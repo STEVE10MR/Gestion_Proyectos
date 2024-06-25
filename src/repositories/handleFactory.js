@@ -26,10 +26,11 @@ export const getOne= (model)=>async (filter,popOptions,selectOptions,popSelect) 
     if(selectOptions) query = query.select(selectOptions)
     if(popSelect) query = query.populate({path:popOptions,select:popSelect})
     else query = query.populate(popOptions)
+
     return query
 }
 export const getAll=(model)=>async (filter,query,popOptions)=>{
-    console.log(filter)
+    
     const features = new APIFeatures(model.find(filter), query,popOptions).execute()
     return features
 }

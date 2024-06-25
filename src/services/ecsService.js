@@ -1,17 +1,17 @@
 
 import * as ecsRepository from "../repositories/ecsRepository.js"
+import * as handleFactory from "../services/handleFactory.js"
 
 
-export const crearEcsService =async(proyecto_id,estado_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia,version,fechaFin)=>{
+export const crearEcsService =async(proyecto_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia,version,fechaFin)=>{
 
-    const ecsObject = await ecsRepository.crearEcsRepository({proyecto_id,estado_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia,versiones:{version,fechaFin}})
+    const ecsObject = await ecsRepository.crearEcsRepository({proyecto_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia,versiones:{version,fechaFin}})
     return ecsObject
 }
-export const editarEcsService =async(_id,user_id,estado_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia)=>{
+export const editarEcsService =async(_id,user_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia)=>{
     let ecsObject = await ecsRepository.obtenerOneEcsRepository({_id})
 
     ecsObject.fase_id = fase_id
-    ecsObject.estado_id = estado_id
     ecsObject.nombre = nombre
     ecsObject.descripcion = descripcion
     ecsObject.tipoEcs = tipoEcs
@@ -129,10 +129,11 @@ export const listarVersionService =async(_id)=>{
 
 
 export const eliminarComponenteService =async(_id,componente_id)=>{
-    console.log(_id,componente_id)
     const ecsObject=await ecsRepository.editarEcsRepository({_id},{$pull:{'componentes':{_id:componente_id}}})
     return ecsObject
 }
+export const eliminarEcsService = handleFactory.deleteOne(ecsRepository)
+export const activarEcsService = handleFactory.activateOne(ecsRepository)
 
 export const listarTiposEcs = ()=>["Software", "Hardware", "Documentación", "Proceso", "Otro"]
 export const listarTiposTecnogologia = ()=>["Frontend", "Backend", "Base de Datos", "DevOps", "QA"]

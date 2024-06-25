@@ -14,4 +14,12 @@ router.route('/')
 
 router.route('/:id')
 .patch(rolController.editarRol)
+
+
+router.route('/:id/activar')
+.patch(rolController.activarRol)
+
+router.route('/:id/desactivar')
+.patch(rolController.eliminarRol)
+
 export default router

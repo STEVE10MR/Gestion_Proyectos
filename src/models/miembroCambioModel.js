@@ -13,6 +13,11 @@ const miembroCambioSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref:'proyecto',
         require:true
+    },
+    active: {
+        type: Boolean,
+        default: true,
+        select: true
     }
 })
 

@@ -14,10 +14,10 @@ const requerimientoFuncionalSchema = new Schema({
         ref:'modulorequerimientofuncional',
         require:true
     },
-    estado_id:{
-        type: Schema.Types.ObjectId,
-        ref:'estado',
-        require:true
+    active: {
+        type: Boolean,
+        default: true,
+        select: true
     },
     nombre:{
         type: Schema.Types.String,

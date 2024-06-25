@@ -26,7 +26,8 @@ export const agregarFaseCronograma = catchAsync(async(req,res,next)=>{
 export const agregarEcsCronograma = catchAsync(async(req,res,next)=>{
     const {cronograma_id} = req.params
     const {_id:projectManagerId}=req.user
-    const {faseId,ecsId,rolId,userIdMiembro,requerimientoId}=req.body
+    const {faseId,ecsId}=req.body
+    
     if (requireField(cronograma_id,faseId,ecsId,projectManagerId)) {
         return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
     }
@@ -56,6 +57,7 @@ export const agregarRequerimientoEcsCronograma = catchAsync(async(req,res,next)=
     const {cronograma_id} = req.params
     const {_id:projectManagerId}=req.user
     const {faseId,ecsId,requerimientoId}=req.body
+   
     if (requireField(cronograma_id,faseId,ecsId,projectManagerId)) {
         return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
     }

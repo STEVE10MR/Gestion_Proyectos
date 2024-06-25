@@ -44,22 +44,37 @@ export const obtenerFase= catchAsync(async (req,res,next)=>{
   
 })
 
-export const eliminarFase= catchAsync(async (req,res,next)=>{
-
-    const {id} = req.params
-    if(requireField(id)){
-      return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
-    } 
-    const data=await faseService.eliminarFaseService(id)
-    resSend(res,{statusCode:201,status:"success",data})
-  
-})
 
 export const listarFases = catchAsync(async (req,res,next)=>{
-    const id = req.params.id
-    let filter = {metodologia_id:id,...req.body}
+  const id = req.params.id
+  let filter = {metodologia_id:id,...req.body}
   
-    const data=await faseService.listarFaseService(filter,req.query)
-    resSend(res,{statusCode:201,status:"success",data})
+  const data=await faseService.listarFaseService(filter,req.query)
+  resSend(res,{statusCode:201,status:"success",data})
     
+})
+
+export const eliminarFase = catchAsync(async(req,res,next)=>{
+    
+  const {id:delete_id} = req.params
+
+  if (requireField(delete_id)) {
+      return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+  }
+
+  const data=await faseService.eliminarFaseService(delete_id)
+
+  resSend(res,{statusCode:201,status:"success",data})
+})
+export const activarFase = catchAsync(async(req,res,next)=>{
+  
+  const {id:activate_id} = req.params
+
+  if (requireField(activate_id)) {
+      return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+  }
+
+  const data=await faseService.activarFaseService(activate_id)
+
+  resSend(res,{statusCode:201,status:"success",data})
 })

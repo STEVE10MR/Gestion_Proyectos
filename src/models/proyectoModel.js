@@ -9,11 +9,6 @@ const proyectoSchema = new Schema({
         ref:'metodologia',
         require:true
     },
-    estado_id:{
-        type: Schema.Types.ObjectId,
-        ref:'estado',
-        require:true
-    },
     nombre:{
         type: Schema.Types.String,
         require:true,
@@ -32,6 +27,11 @@ const proyectoSchema = new Schema({
     },
     fechaFin: {
         type: Schema.Types.Date
+    },
+    active: {
+        type: Boolean,
+        default: true,
+        select: true
     }
 })
 

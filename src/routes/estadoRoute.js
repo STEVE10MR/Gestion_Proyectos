@@ -13,6 +13,11 @@ router.route('/')
 
 router.route("/:id")
 .patch(estadoController.editarEstado)
-.delete(estadoController.eliminarEstado)
+
+router.route('/:id/activar')
+.patch(estadoController.activarEstado)
+
+router.route('/:id/desactivar')
+.patch(estadoController.eliminarEstado)
 
 export default router

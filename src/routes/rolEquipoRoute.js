@@ -14,4 +14,11 @@ router.route('/')
 
 router.route('/:id')
 .patch(rolEquipoController.editarRolEquipo)
+
+router.route('/:id/activar')
+.patch(rolEquipoController.activarRolEquipo)
+
+router.route('/:id/desactivar')
+.patch(rolEquipoController.eliminarRolEquipo)
+
 export default router

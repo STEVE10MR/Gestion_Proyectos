@@ -1,4 +1,5 @@
 import * as equipoProyectoRepository from "../repositories/equipoProyectoRepository.js"
+import * as handleFactory from "../services/handleFactory.js"
 import * as userService from "../services/userService.js"
 import mongoose from "mongoose"
 
@@ -8,7 +9,7 @@ export const crearEquipoProyectoService =async(proyecto_id,rolEquipo_id,email,fi
     userObject.equipoProyecto = equipoProyecto
     return userObject
 }
-export const agregarEquipoProyectoService =async(proyecto_id,user_id)=>{
+export const agregarEquipoProyectoService =async(proyecto_id,rolEquipo_id,user_id)=>{
 
     const userObject = await userService.obtenerUserService(user_id)
 
@@ -16,15 +17,14 @@ export const agregarEquipoProyectoService =async(proyecto_id,user_id)=>{
         return {messageError:'ERROR_MESSAGE'} 
     }
 
-    const EquipoProyecto = await equipoProyectoRepository.crearEquipoProyectoRepository({user_id:userObject._id,proyecto_id,rolEquipo_id:'6658bddb9fc818144416fc45'})
+    const EquipoProyecto = await equipoProyectoRepository.crearEquipoProyectoRepository({user_id:userObject._id,proyecto_id,rolEquipo_id})
 
-    return {user:userObject,EquipoProyecto}
+    return {EquipoProyecto}
 }
 
-export const eliminarEquipoProyectoService =async(_id)=>{
+export const eliminarEquipoProyectoService = handleFactory.deleteOne(equipoProyectoRepository)
+export const activarEquipoProyectoService = handleFactory.activateOne(equipoProyectoRepository)
 
-    return await equipoProyectoRepository.eliminarEquipoProyectoRepository(_id)
-}
 export const listarEquipoProyectoUserService = async (userId)=>{
 
     return await equipoProyectoRepository.getModelAggregate.aggregate([
@@ -58,13 +58,12 @@ export const listarEquipoProyectoUserService = async (userId)=>{
     }])
 }
 
-
+/*Quitar de rutas y de la vista*/
 export const listarEquipoProyectoService = async (body,query)=>{
     let filter= undefined
     if(body) filter = {...body}
     return await equipoProyectoRepository.listaEquipoProyectoRepository(filter,query,"user_id rolEquipo_id") 
 }
-
 
 export const listarEquipoJefeDeProyectoService = async (body,query,popOptions)=>{
     let filter= undefined
@@ -72,7 +71,7 @@ export const listarEquipoJefeDeProyectoService = async (body,query,popOptions)=>
     
     return await equipoProyectoRepository.listaEquipoProyectoRepository(filter,query,popOptions) 
 }
-
+/**/
 export const obtenerEquipoProyectoService = async(_id)=>{
     return await equipoProyectoRepository.obtenerEquipoProyectoRepository({_id})
 }
@@ -81,4 +80,4 @@ export const editarEquipoProyectoService = async(_id,proyecto_id,rolEquipo_id)=>
     const user=await equipoProyectoRepository.editarEquipoProyectoRepository({_id},{proyecto_id,rolEquipo_id})
     return user
 }
-  
+

@@ -17,7 +17,12 @@ router.use('/:fase_id/ecs',ecsRoute)
 router.route("/:id")
 .get(faseController.obtenerFase)
 .patch(faseController.editarFase)
-.delete(faseController.eliminarFase)
+
+router.route('/:id/activar')
+.patch(faseController.activarFase)
+
+router.route('/:id/desactivar')
+.patch(faseController.eliminarFase)
 
 
 export default router

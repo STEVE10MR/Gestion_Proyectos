@@ -21,6 +21,12 @@ router.route('/:ecs_id')
 .patch(ecsController.editarEcs)
 .get(ecsController.obtenerEcs)
 
+router.route('/:ecs_id/activar')
+.patch(ecsController.activarEcs)
+
+router.route('/:ecs_id/desactivar')
+.patch(ecsController.eliminarEcs)
+
 router.route('/:ecs_id/version')
 .patch(ecsController.agregarVersionEcs)
 .get(ecsController.listarVersionEcs)

@@ -97,19 +97,6 @@ export const editarEquipoProyecto = catchAsync(async(req,res,next)=>{
   resSend(res,{statusCode:201,status:"success",data})
 })
 
-export const eliminarEquipoProyecto = catchAsync(async (req,res,next)=>{
-
-  const {idEquipoProyecto:_id} = req.params
-  console.log(_id)
-  if(requireField(_id)){
-    return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
-  }
-
-  const data=await equipoProyectoService.eliminarEquipoProyectoService(_id)
-  resSend(res,{statusCode:201,status:"success",data})
-  
-})
-
 
 export const listarEquipoProyecto = catchAsync(async (req,res,next)=>{
   let {id:proyecto_id} = req.params
@@ -139,3 +126,28 @@ export const obtenerEquipoProyecto = catchAsync(async (req,res,next)=>{
       
 })
 
+
+export const eliminarEquipoProyecto = catchAsync(async(req,res,next)=>{
+    
+  const {idEquipoProyecto:delete_id} = req.params
+
+  if (requireField(delete_id)) {
+      return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+  }
+
+  const data=await equipoProyectoService.eliminarEquipoProyectoService(delete_id)
+
+  resSend(res,{statusCode:201,status:"success",data})
+})
+export const activarEquipoProyecto = catchAsync(async(req,res,next)=>{
+  
+  const {idEquipoProyecto:activate_id} = req.params
+
+  if (requireField(activate_id)) {
+      return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+  }
+
+  const data=await equipoProyectoService.activarEquipoProyectoService(activate_id)
+
+  resSend(res,{statusCode:201,status:"success",data})
+})

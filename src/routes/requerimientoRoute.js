@@ -11,6 +11,12 @@ router.route('/')
 
 router.route("/:id")
 .patch(requerimientoController.editarRequerimiento)
-.delete(requerimientoController.eliminarRequerimiento)
+
+router.route('/:id/activar')
+.patch(requerimientoController.activarRequerimiento)
+
+router.route('/:id/desactivar')
+.patch(requerimientoController.eliminarRequerimiento)
+
 
 export default router

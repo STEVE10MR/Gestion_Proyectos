@@ -53,8 +53,7 @@ export const editarPasswordUserService = async (_id,passwordCurrent,passwordNew,
 };
 
 export const obtenerUserService = async(_id)=>{
-
-  const user=await userRepository.obtenerUser({_id})
+  const user=await userRepository.obtenerUserId(_id)
   return user
 }
 

@@ -1,6 +1,6 @@
 import * as miembroCambioRepository from "../repositories/miembroCambioRepository.js"
 import * as userService from "../services/userService.js"
-
+import * as handleFactory from "../services/handleFactory.js"
 export const crearMiembroCambioService =async(proyecto_id,email,firtName,lastName)=>{
     const userObject = await userService.crearUserService(email,firtName,lastName)
     const miembroCambio = await miembroCambioRepository.crearMiembroCambioRepository({user_id:userObject.user._id,proyecto_id})
@@ -21,10 +21,6 @@ export const agregarMiembroCambioService =async(proyecto_id,user_id)=>{
     return {user:userObject,miembroCambio}
 }
 
-export const eliminarMiembroCambioService =async(_id)=>{
-
-    return await miembroCambioRepository.eliminarMiembroCambioRepository(_id)
-}
 export const listarMiembroCambioService = async (body,query,popOptions)=>{
     let filter= undefined
     if(body) filter = {...body}
@@ -39,4 +35,5 @@ export const editarMiembroCambioService = async(_id,user_id)=>{
     const user=await miembroCambioRepository.editarMiembroCambioRepository({_id},{user_id})
     return user
 }
-  
+export const eliminarMiembroCambioService = handleFactory.deleteOne(miembroCambioRepository)
+export const activarMiembroCambioService = handleFactory.activateOne(miembroCambioRepository)

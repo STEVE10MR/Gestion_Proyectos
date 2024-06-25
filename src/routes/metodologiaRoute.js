@@ -16,7 +16,11 @@ router.use("/:id/fases",faseRoute)
 router.route("/:id")
 .get(metodologiaController.obtenerMetodologia)
 .patch(metodologiaController.editarMetodologia)
-.delete(metodologiaController.eliminarMetodologia)
 
+router.route('/:id/activar')
+.patch(metodologiaController.activarMetodologia)
+
+router.route('/:id/desactivar')
+.patch(metodologiaController.eliminarMetodologia)
 
 export default router

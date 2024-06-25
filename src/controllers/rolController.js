@@ -39,3 +39,27 @@ export const editarRol = catchAsync(async(req,res,next)=>{
 
     resSend(res,{statusCode:201,status:"success",data})
 })
+export const eliminarRol = catchAsync(async(req,res,next)=>{
+    
+    const {id:delete_id} = req.params
+
+    if (requireField(delete_id)) {
+        return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+    }
+
+    const data=await rolService.eliminarRolService(delete_id)
+
+    resSend(res,{statusCode:201,status:"success",data})
+})
+export const activarRol = catchAsync(async(req,res,next)=>{
+    
+    const {id:activate_id} = req.params
+
+    if (requireField(activate_id)) {
+        return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+    }
+
+    const data=await rolService.activarRolService(activate_id)
+
+    resSend(res,{statusCode:201,status:"success",data})
+})

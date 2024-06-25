@@ -69,17 +69,29 @@ export const agregarMiembroCambio = catchAsync(async(req,res,next)=>{
 })
 
 
-export const eliminarMiembroCambio = catchAsync(async (req,res,next)=>{
+export const eliminarMiembroCambio = catchAsync(async(req,res,next)=>{
+    
+  const {id:delete_id} = req.params
 
-  const {id:_id} = req.params
-
-  if(requireField(_id)){
-    return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
+  if (requireField(delete_id)) {
+      return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
   }
 
-  const data=await miembroCambioService.eliminarMiembroCambioService(_id)
+  const data=await miembroCambioService.eliminarMiembroCambioService(delete_id)
+
   resSend(res,{statusCode:201,status:"success",data})
+})
+export const activarMiembroCambio = catchAsync(async(req,res,next)=>{
   
+  const {id:activate_id} = req.params
+
+  if (requireField(activate_id)) {
+      return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+  }
+
+  const data=await miembroCambioService.activarMiembroCambioService(activate_id)
+
+  resSend(res,{statusCode:201,status:"success",data})
 })
 
 

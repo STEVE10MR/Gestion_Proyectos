@@ -12,8 +12,12 @@ router.route('/')
 
 router.route("/:id")
 .patch(requerimientoModuloController.editarModuloRequerimiento)
-.delete(requerimientoModuloController.eliminarModuloRequerimiento)
 .get(requerimientoModuloController.obtenerModuloRequerimiento)
 
+router.route('/:id/activar')
+.patch(requerimientoModuloController.activarRequerimientoModulo)
+
+router.route('/:id/desactivar')
+.patch(requerimientoModuloController.eliminarRequerimientoModulo)
 
 export default router

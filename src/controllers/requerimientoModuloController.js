@@ -53,15 +53,27 @@ export const editarModuloRequerimiento = catchAsync(async(req,res,next)=>{
     resSend(res,{statusCode:201,status:"success",data})
 })
 
-export const eliminarModuloRequerimiento = catchAsync(async(req,res,next)=>{
+export const eliminarRequerimientoModulo = catchAsync(async(req,res,next)=>{
     
-    const _id = req.params.id
+    const {id:delete_id} = req.params
 
-    if (requireField(_id)) {
+    if (requireField(delete_id)) {
         return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
     }
-    console.log(_id)
-    const data=await moduloRequerimientoService.eliminarModuloRequerimientoRepository(_id)
+
+    const data=await moduloRequerimientoService.eliminarModuloRequerimientoService(delete_id)
+
+    resSend(res,{statusCode:201,status:"success",data})
+})
+export const activarRequerimientoModulo = catchAsync(async(req,res,next)=>{
+    
+    const {id:activate_id} = req.params
+
+    if (requireField(activate_id)) {
+        return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+    }
+
+    const data=await moduloRequerimientoService.activarModuloRequerimientoService(activate_id)
 
     resSend(res,{statusCode:201,status:"success",data})
 })

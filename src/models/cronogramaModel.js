@@ -45,9 +45,9 @@ const cronogramaSchema = new Schema({
                     unique:true,
                     require:true
                 },
-                user_id :{
+                equipoProyecto_id :{
                     type: Schema.Types.ObjectId,
-                    ref:'user',
+                    ref:'equipoproyecto',
                     require:true
                 },
                 fechaCreacion:{

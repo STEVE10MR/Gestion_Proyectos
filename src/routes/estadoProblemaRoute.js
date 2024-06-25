@@ -13,6 +13,11 @@ router.route('/')
 
 router.route("/:id")
 .patch(estadoProblemasController.editarEstadoProblema)
-.delete(estadoProblemasController.editarEstadoProblema)
+
+router.route('/:id/activar')
+.patch(estadoProblemasController.activarEstadoProblema)
+
+router.route('/:id/desactivar')
+.patch(estadoProblemasController.eliminarEstadoProblema)
 
 export default router

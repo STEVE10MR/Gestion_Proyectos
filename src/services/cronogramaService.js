@@ -90,19 +90,27 @@ export const agregarEcsCronogramaService = async (_id, fase_id, ecs_id, rol_id, 
 
 export const agregarEcsCronogramaService = async (_id, fase_id, ecs_id) => {
     
-    const ecsObject = await cronogramaRepository.editarCronogramaRepository(
-        { _id, "cronogramaFase.fase_id": fase_id },
-        {
-            $push: {
-                'cronogramaFase.$.cronogramaEcs': { ecs_id}
-            }
-        }
-    );
-    if (!ecsObject) {
-        return { messageError: 'ERROR_MESSAGE' };
-    }
 
-    return ecsObject;
+    let ecsObject =undefined
+
+    try{
+        ecsObject=await cronogramaRepository.editarCronogramaRepository({_id,"cronogramaFase.fase_id":fase_id,"cronogramaFase.cronogramaEcs.ecs_id":ecs_id}) 
+        if(!ecsObject) throw new Error("generate")
+    }
+    catch(err){
+        ecsObject = await cronogramaRepository.editarCronogramaRepository(
+            { _id, "cronogramaFase.fase_id": fase_id },
+            {
+                $push: {
+                    'cronogramaFase.$.cronogramaEcs': { ecs_id}
+                }
+            }
+        );
+    }
+    if(!ecsObject){
+        return {messageError:'ERROR_MESSAGE'}
+    }
+    return ecsObject
 };
 
 export const agregarRequerimientoEcsCronogramaService = async (_id, fase_id, ecs_id, requerimiento_id, project_manager_id) => {
@@ -155,16 +163,16 @@ export const agregarRequerimientoEcsCronogramaService = async (_id, fase_id, ecs
 };
 
 
-export const agregarMiembroEcsCronogramaService = async (_id, fase_id, ecs_id, rol_id, user_miembro_id) => {
+export const agregarMiembroEcsCronogramaService = async (_id, fase_id, ecs_id, rol_id, equipoMiembro_id) => {
     
-    const miembros = { rol_id, user_id: user_miembro_id };
+    const miembros = { rol_id, equipoProyecto_id:equipoMiembro_id };
     let ecsObject=null
     try{
         ecsObject = await cronogramaRepository.editarCronogramaRepository(
-            { _id, "cronogramaFase.fase_id": fase_id ,"cronogramaFase.cronogramaEcs.ecs_id": ecs_id ,"cronogramaFase.cronogramaEcs.miembros.user_id": user_miembro_id},
+            { _id, "cronogramaFase.fase_id": fase_id ,"cronogramaFase.cronogramaEcs.ecs_id": ecs_id ,"cronogramaFase.cronogramaEcs.miembros.equipoProyecto_id": equipoMiembro_id},
             {
                 $set: {
-                    'cronogramaFase.$[f].cronogramaEcs.$[s].miembros.$[m].user_id': user_miembro_id,
+                    'cronogramaFase.$[f].cronogramaEcs.$[s].miembros.$[m].equipoProyecto_id': equipoMiembro_id,
                     'cronogramaFase.$[f].cronogramaEcs.$[s].miembros.$[m].rol_id': rol_id
                 }
             },undefined,
@@ -172,7 +180,7 @@ export const agregarMiembroEcsCronogramaService = async (_id, fase_id, ecs_id, r
                 arrayFilters: [
                     { "f.fase_id": fase_id },
                     { "s.ecs_id": ecs_id },
-                    { "m.user_id": user_miembro_id }
+                    { "m.user_id": equipoMiembro_id }
                 ],
                 new: true
             }
@@ -226,12 +234,12 @@ export const quitarEcsCronogramaService = async(_id,fase_id,ecs_id)=>{
     return ecsObject
 }
 
-export const quitarMiembroEcsCronogramaService = async(_id,fase_id,ecs_id,miembros_id)=>{
+export const quitarMiembroEcsCronogramaService = async(_id,fase_id,ecs_id,miembro_id)=>{
     const ecsObject = await cronogramaRepository.editarCronogramaRepository(
         { _id ,"cronogramaFase.fase_id": fase_id ,"cronogramaFase.cronogramaEcs.ecs_id": ecs_id},
         {
             $pull: {
-                "cronogramaFase.$[f].cronogramaEcs.$[s].miembros": { _id:miembros_id }
+                "cronogramaFase.$[f].cronogramaEcs.$[s].miembros": { _id:miembro_id }
             }
         },undefined,
         {
@@ -249,6 +257,7 @@ export const quitarMiembroEcsCronogramaService = async(_id,fase_id,ecs_id,miembr
 }
 
 export const quitarRequerimientoEcsCronogramaService = async(_id,fase_id,ecs_id,requerimientos_id)=>{
+    console.log(_id,fase_id,ecs_id,requerimientos_id)
     const ecsObject = await cronogramaRepository.editarCronogramaRepository(
         { _id ,"cronogramaFase.fase_id": fase_id,"cronogramaFase.cronogramaEcs.ecs_id": ecs_id},
         {
@@ -273,7 +282,7 @@ export const quitarRequerimientoEcsCronogramaService = async(_id,fase_id,ecs_id,
 
 
 export const obtenerCronogramaService = async(proyecto_id)=>{
-    return await cronogramaRepository.obtenerCronogramaRepository({proyecto_id},'proyecto_id metodologia_id cronogramaFase.fase_id cronogramaFase.cronogramaEcs.ecs_id cronogramaFase.cronogramaEcs.miembros.rol_id cronogramaFase.cronogramaEcs.miembros.user_id cronogramaFase.cronogramaEcs.requerimientos.requerimiento_id cronogramaFase.cronogramaEcs.requerimientos.user_id')
+    return await cronogramaRepository.obtenerCronogramaRepository({proyecto_id},'proyecto_id metodologia_id cronogramaFase.fase_id cronogramaFase.cronogramaEcs.ecs_id cronogramaFase.cronogramaEcs.miembros.rol_id cronogramaFase.cronogramaEcs.miembros.equipoProyecto_id cronogramaFase.cronogramaEcs.requerimientos.requerimiento_id cronogramaFase.cronogramaEcs.requerimientos.user_id')
 }
 export const editarCronogramaService = async(_id,estado_id,nombre,descripcion,fechaFin)=>{
     return await cronogramaRepository.editarCronogramaRepository({_id},{estado_id,nombre,descripcion,fechaFin})

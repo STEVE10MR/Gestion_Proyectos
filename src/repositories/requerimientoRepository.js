@@ -6,3 +6,5 @@ export const crearRequermientoRepository= handleFactory.createOne(requerimientoM
 export const editarRequermientoRepository = handleFactory.updateOne(requerimientoModel)
 export const obtenerRequermientoRepository = handleFactory.getOneId(requerimientoModel)
 export const listaRequermientoRepository = handleFactory.getAll(requerimientoModel)
+export const eliminar = handleFactory.deleteOne(requerimientoModel)
+export const activar = handleFactory.ActiveOne(requerimientoModel)

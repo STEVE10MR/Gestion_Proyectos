@@ -24,6 +24,12 @@ router.route('/:id')
 .patch(proyectoController.editarProyecto)
 .get(proyectoController.obtenerProyecto)
 
+router.route('/:id/activar')
+.patch(proyectoController.activarProyecto)
+
+router.route('/:id/desactivar')
+.patch(proyectoController.eliminarProyecto)
+
 router.use('/:id/cronograma',myFunction,cronogramaRoute)
 router.use('/:id/miembroCambio',myFunction,miembroCambioRoute)
 router.use('/:id/equipoProyecto',myFunction,equipoProyectoRoute)

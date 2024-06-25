@@ -10,12 +10,12 @@ import resetUrl from '../utils/resetUrl.js';
 
 export const crearEcs = catchAsync(async(req,res,next)=>{
     const {id,fase_id} = req.params
-    const {estado_id,nombre,descripcion,tipoEcs,tipoTecnologia,version,fechaFin} = req.body
-    console.log(id,estado_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia,version,fechaFin)
-    if(requireField(id,estado_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia,version,fechaFin)){
+    const {nombre,descripcion,tipoEcs,tipoTecnologia,version,fechaFin} = req.body
+    console.log(id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia,version,fechaFin)
+    if(requireField(id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia,version,fechaFin)){
       return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
     }
-    const data=await ecsService.crearEcsService(id,estado_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia,version,fechaFin)
+    const data=await ecsService.crearEcsService(id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia,version,fechaFin)
   
     resSend(res,{statusCode:201,status:"success",data})
 })
@@ -36,12 +36,12 @@ export const editarEcs = catchAsync(async(req,res,next)=>{
     const {fase_id,ecs_id} = req.params
     const {_id:user_id} = req.user
 
-    const {estado_id,nombre,descripcion,tipoEcs,tipoTecnologia} = req.body
+    const {nombre,descripcion,tipoEcs,tipoTecnologia} = req.body
 
-    if(requireField(user_id,ecs_id,estado_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia)){
+    if(requireField(user_id,ecs_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia)){
       return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
     }
-    const data=await ecsService.editarEcsService(ecs_id,user_id,estado_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia)
+    const data=await ecsService.editarEcsService(ecs_id,user_id,fase_id,nombre,descripcion,tipoEcs,tipoTecnologia)
   
     resSend(res,{statusCode:201,status:"success",data})
 })
@@ -150,6 +150,31 @@ export const listarVersionEcs = catchAsync(async(req,res,next)=>{
   }
 
   const data=await ecsService.listarVersionService(id)
+
+  resSend(res,{statusCode:201,status:"success",data})
+})
+
+export const eliminarEcs = catchAsync(async(req,res,next)=>{
+    
+  const {ecs_id:delete_id} = req.params
+
+  if (requireField(delete_id)) {
+      return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+  }
+
+  const data=await ecsService.eliminarEcsService(delete_id)
+
+  resSend(res,{statusCode:201,status:"success",data})
+})
+export const activarEcs = catchAsync(async(req,res,next)=>{
+  
+  const {ecs_id:activate_id} = req.params
+
+  if (requireField(activate_id)) {
+      return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+  }
+
+  const data=await ecsService.activarEcsService(activate_id)
 
   resSend(res,{statusCode:201,status:"success",data})
 })

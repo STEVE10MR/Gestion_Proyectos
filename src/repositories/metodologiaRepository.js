@@ -6,4 +6,5 @@ export const crearMetodologiaRepository = handleFactory.createOne(metodologiaMod
 export const editarMetodologiaRepository = handleFactory.updateOne(metodologiaModel)
 export const obtenerMetodologiaRepository = handleFactory.getOneId(metodologiaModel)
 export const listaMetodologiaRepository = handleFactory.getAll(metodologiaModel)
-export const eliminarMetodologiaRepository = handleFactory.clearOne(metodologiaModel)
+export const eliminar = handleFactory.deleteOne(metodologiaModel)
+export const activar = handleFactory.ActiveOne(metodologiaModel)

@@ -13,6 +13,11 @@ router.route('/')
 router.route("/:id")
 .get(miembroCambioController.obtenerMiembroCambio)
 .patch(miembroCambioController.editarMiembroCambio)
-.delete(miembroCambioController.eliminarMiembroCambio)
+
+router.route('/:id/activar')
+.patch(miembroCambioController.activarMiembroCambio)
+
+router.route('/:id/desactivar')
+.patch(miembroCambioController.eliminarMiembroCambio)
 
 export default router

@@ -13,6 +13,11 @@ router.route('/')
 router.route("/:idEquipoProyecto")
 .get(equipoProyectoController.obtenerEquipoProyecto)
 .patch(equipoProyectoController.editarEquipoProyecto)
-.delete(equipoProyectoController.eliminarEquipoProyecto)
+
+router.route('/:idEquipoProyecto/activar')
+.patch(equipoProyectoController.activarEquipoProyecto)
+
+router.route('/:idEquipoProyecto/desactivar')
+.patch(equipoProyectoController.eliminarEquipoProyecto)
 
 export default router

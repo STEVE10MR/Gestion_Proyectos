@@ -1,5 +1,5 @@
 import * as estadoRepository from "../repositories/estadoRepository.js"
-
+import * as handleFactory from "../services/handleFactory.js"
 export const listarEstadoService = async(body,query,popOptions)=>{
     let filter= undefined
     if(body) filter = {...body}
@@ -11,6 +11,5 @@ export const registrarEstadoService = async(nombre)=>{
 export const editarEstadoService = async(_id,nombre)=>{
     return await estadoRepository.editarEstadoRepository({_id},{nombre})
 } 
-export const eliminarEstadoService = async(_id)=>{
-    return await estadoRepository.eliminarEstadoRepository(_id)
-} 
+export const eliminarEstadoService = handleFactory.deleteOne(estadoRepository)
+export const activarEstadoService = handleFactory.activateOne(estadoRepository)

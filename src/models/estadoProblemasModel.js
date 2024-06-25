@@ -9,6 +9,11 @@ const estadoProblemasSchema = new Schema({
         require:true,
         minlength:0,
         maxlength:150
+    },
+    active: {
+        type: Boolean,
+        default: true,
+        select: true
     }
 })
 

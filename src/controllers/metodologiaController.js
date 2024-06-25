@@ -52,13 +52,27 @@ export const obtenerMetodologia= catchAsync(async (req,res,next)=>{
 
 })
 
-export const eliminarMetodologia= catchAsync(async (req,res,next)=>{
+export const eliminarMetodologia = catchAsync(async(req,res,next)=>{
+    
+  const {id:delete_id} = req.params
 
-  const {id} = req.params
-  if(requireField(id)){
-    return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
-  } 
-  const data=await metodologiaService.eliminarMetodologiaService(id)
+  if (requireField(delete_id)) {
+      return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+  }
+
+  const data=await metodologiaService.eliminarMetodologiaService(delete_id)
+
   resSend(res,{statusCode:201,status:"success",data})
+})
+export const activarMetodologia = catchAsync(async(req,res,next)=>{
+  
+  const {id:activate_id} = req.params
 
+  if (requireField(activate_id)) {
+      return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+  }
+
+  const data=await metodologiaService.activarMetodologiaService(activate_id)
+
+  resSend(res,{statusCode:201,status:"success",data})
 })

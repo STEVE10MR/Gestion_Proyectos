@@ -6,4 +6,5 @@ export const crearEstadoProblemaRepository = handleFactory.createOne(estadoProbl
 export const editarEstadoProblemaRepository = handleFactory.updateOne(estadoProblemasModel)
 export const obtenerEstadoProblemaRepository = handleFactory.getOneId(estadoProblemasModel)
 export const listaEstadoProblemaRepository = handleFactory.getAll(estadoProblemasModel)
-export const eliminarEstadoProblemaRepository = handleFactory.clearOne(estadoProblemasModel)
+export const eliminar = handleFactory.deleteOne(estadoProblemasModel)
+export const activar = handleFactory.ActiveOne(estadoProblemasModel)

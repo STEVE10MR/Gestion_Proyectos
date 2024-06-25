@@ -92,6 +92,11 @@ const ecsSchema = new Schema({
         type: Schema.Types.String,
         enum: ["Frontend", "Backend", "Base de Datos", "DevOps", "QA"],
         default: "Frontend"
+    },
+    active: {
+        type: Boolean,
+        default: true,
+        select: true
     }
 })
 
@@ -106,7 +111,7 @@ ecsSchema.pre('save',async function(next){
 
     const original = await this.constructor.findById(this._id)
 
-    const camposModificados = ['proyecto_id', 'fase_id', 'nombre', 'descripcion', 'version','estado_id', 'tipoEcs', 'tipoTecnologia'];
+    const camposModificados = ['proyecto_id', 'fase_id', 'nombre', 'descripcion', 'version', 'tipoEcs', 'tipoTecnologia'];
    
     
   

@@ -42,6 +42,11 @@ const tareaSchema = new Schema({
     fechaFin: {
         type: Schema.Types.Date
     },
+    active: {
+        type: Boolean,
+        default: true,
+        select: true
+      }
 });
 
 
