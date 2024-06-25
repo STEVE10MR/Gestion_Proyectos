@@ -282,7 +282,7 @@ export const quitarRequerimientoEcsCronogramaService = async(_id,fase_id,ecs_id,
 
 
 export const obtenerCronogramaService = async(proyecto_id)=>{
-    return await cronogramaRepository.obtenerCronogramaRepository({proyecto_id},'proyecto_id metodologia_id cronogramaFase.fase_id cronogramaFase.cronogramaEcs.ecs_id cronogramaFase.cronogramaEcs.miembros.rol_id cronogramaFase.cronogramaEcs.miembros.equipoProyecto_id cronogramaFase.cronogramaEcs.requerimientos.requerimiento_id cronogramaFase.cronogramaEcs.requerimientos.user_id')
+    return await cronogramaRepository.obtenerCronogramaRepository({proyecto_id},'proyecto_id metodologia_id cronogramaFase.fase_id cronogramaFase.cronogramaEcs.ecs_id cronogramaFase.cronogramaEcs.miembros.rol_id cronogramaFase.cronogramaEcs.miembros.equipoProyecto_id cronogramaFase.cronogramaEcs.requerimientos.requerimiento_id cronogramaFase.cronogramaEcs.requerimientos.user_id cronogramaFase.cronogramaEcs.miembros.equipoProyecto_id.user_id cronogramaFase.cronogramaEcs.miembros.equipoProyecto_id.rolEquipo_id')
 }
 export const editarCronogramaService = async(_id,estado_id,nombre,descripcion,fechaFin)=>{
     return await cronogramaRepository.editarCronogramaRepository({_id},{estado_id,nombre,descripcion,fechaFin})
