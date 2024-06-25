@@ -85,7 +85,7 @@ export const agregarEquipoJefedeProyecto = catchAsync(async(req,res,next)=>{
 
 
 export const editarEquipoProyecto = catchAsync(async(req,res,next)=>{
-  const {id:_id} = req.params
+  const {idEquipoProyecto:_id} = req.params
   const {rolEquipo_id} = req.body
 
   if(requireField(_id,rolEquipo_id)){

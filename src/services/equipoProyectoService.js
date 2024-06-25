@@ -76,8 +76,8 @@ export const obtenerEquipoProyectoService = async(_id)=>{
     return await equipoProyectoRepository.obtenerEquipoProyectoRepository({_id})
 }
 
-export const editarEquipoProyectoService = async(_id,proyecto_id,rolEquipo_id)=>{
-    const user=await equipoProyectoRepository.editarEquipoProyectoRepository({_id},{proyecto_id,rolEquipo_id})
+export const editarEquipoProyectoService = async(_id,rolEquipo_id)=>{
+    const user=await equipoProyectoRepository.editarEquipoProyectoRepository({_id},{rolEquipo_id})
     return user
 }
 
