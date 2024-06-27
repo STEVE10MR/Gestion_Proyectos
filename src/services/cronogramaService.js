@@ -1,22 +1,30 @@
 import * as cronogramaRepository from "../repositories/cronogramaRepository.js"
 
 
-export const agregarFaseCronogramaService = async(_id,fase_id,fechaFin,fechaInicio)=>{
-
+const verificarFechas=(fechaFin,fechaInicio)=>{
     const fechaFinObj = new Date(fechaFin);
     const fechaInicioObj = new Date(fechaInicio);
 
 
     if (isNaN(fechaFinObj) || isNaN(fechaInicioObj)) {
-        return {messageError:'ERROR_MESSAGE'}
+        return true
     }
     const fechaFinMili = new Date(fechaFinObj).getTime()
     const fechaInicioMili = new Date(fechaInicioObj).getTime()+(7 * 24 * 60 * 60 * 1000)
 
     if(fechaInicioMili>=fechaFinMili){
-        return {messageError:'ERROR_MESSAGE'}
+        return true
     }
 
+    return false
+}
+
+
+export const agregarFaseCronogramaService = async(_id,fase_id,fechaFin,fechaInicio)=>{
+
+    if(verificarFechas(fechaFin,fechaInicio)){
+        return {messageError:'ERROR_MESSAGE'}
+    }
     let ecsObject = null
     try{
         ecsObject=await cronogramaRepository.editarCronogramaRepository({_id,"cronogramaFase.fase_id":fase_id},{
@@ -180,7 +188,8 @@ export const agregarMiembroEcsCronogramaService = async (_id, fase_id, ecs_id, r
                 arrayFilters: [
                     { "f.fase_id": fase_id },
                     { "s.ecs_id": ecs_id },
-                    { "m.user_id": equipoMiembro_id }
+                    //{ "m.user_id": equipoMiembro_id }
+                    { "m.equipoMiembro_id": equipoMiembro_id }
                 ],
                 new: true
             }
@@ -212,6 +221,132 @@ export const agregarMiembroEcsCronogramaService = async (_id, fase_id, ecs_id, r
     return ecsObject;
 };
 
+
+export const obtenerMiembroEcsCronogramaService = async (_id, fase_id, ecs_id) => {
+    const cronograma= await cronogramaRepository.obtenerCronogramaRepository(
+        { _id, "cronogramaFase.fase_id": fase_id ,"cronogramaFase.cronogramaEcs.ecs_id": ecs_id},
+        "cronogramaFase.cronogramaEcs.miembros",
+        undefined,
+        undefined,
+        [
+            { path: 'rol_id', select: '_id nombre' },
+            {
+                path: 'equipoProyecto_id',
+                populate: { path: 'user_id rolEquipo_id', select: '_id name nombre' } 
+            }
+        ],
+        { "cronogramaFase.cronogramaEcs.miembros": 1 }
+    )
+
+    if(!cronograma) return []
+
+    return cronograma.cronogramaFase[0].cronogramaEcs[0].miembros
+};
+
+
+export const verificarMiembroEcsCronogramaService = async (_id, fase_id, ecs_id,equipoMiembro_id) => {
+    
+    let ecsObject=null
+
+    ecsObject = await cronogramaRepository.editarCronogramaRepository(
+        { _id, "cronogramaFase.fase_id": fase_id ,"cronogramaFase.cronogramaEcs.ecs_id": ecs_id ,"cronogramaFase.cronogramaEcs.miembros.equipoProyecto_id": equipoMiembro_id},
+    );
+    if(!ecsObject) return false
+    return true
+};
+
+export const agregarTareaEcsCronogramaService = async (_id, fase_id, ecs_id,tarea_id, titulo, descripcion,equipoMiembro_id,fechaFin,fechaInicio) => {
+
+    if(verificarFechas(fechaFin,fechaInicio)){
+        return {messageError:'ERROR_MESSAGE'}
+    }
+
+    const tareas = { titulo, descripcion,equipoProyecto_id:equipoMiembro_id,fechaFin,fechaInicio};
+
+    const userCheck = await verificarMiembroEcsCronogramaService(_id, fase_id, ecs_id,equipoMiembro_id)
+    if(!userCheck){
+        return { messageError: 'ERROR_MESSAGE' };
+    }
+
+    let ecsObject=null
+
+
+    try{
+        console.log("tarea",_id,fase_id,ecs_id,tarea_id)
+        if(!tarea_id){
+            throw new Error("generate")
+        }
+        console.log("dea")
+        ecsObject = await cronogramaRepository.editarCronogramaRepository(
+            { _id, "cronogramaFase.fase_id": fase_id ,"cronogramaFase.cronogramaEcs.ecs_id": ecs_id ,"cronogramaFase.cronogramaEcs.tareas._id": tarea_id},
+            {
+                $set: {
+                    'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].titulo': titulo,
+                    'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].descripcion': descripcion,
+                    'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].equipoProyecto_id': equipoProyecto_id,
+                    'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].fechaFin': fechaFin,
+                    'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].fechaInicio': fechaInicio
+                }
+            },undefined,
+            {
+                arrayFilters: [
+                    { "f.fase_id": fase_id },
+                    { "s.ecs_id": ecs_id },
+                    { "t._id": tarea_id }
+                ],
+                new: true
+            }
+        );
+        console.log(ecsObject)
+        if(!ecsObject) throw new Error("generate")
+    }
+    catch(err){
+        ecsObject = await cronogramaRepository.editarCronogramaRepository(
+            { _id, "cronogramaFase.fase_id": fase_id ,"cronogramaFase.cronogramaEcs.ecs_id": ecs_id },
+            {
+                $push: {
+                    'cronogramaFase.$[f].cronogramaEcs.$[s].tareas': { ...tareas}
+                }
+            },undefined,
+            {
+                arrayFilters: [
+                    { "f.fase_id": fase_id },
+                    { "s.ecs_id": ecs_id },
+                ],
+                new: true
+            }
+        );
+    }
+
+    if (!ecsObject) {
+        return { messageError: 'ERROR_MESSAGE' };
+    }
+
+    return ecsObject;
+};
+
+export const quitarTareaEcsCronogramaService = async (_id, fase_id, ecs_id, tarea_id) => {
+
+    const ecsObject = await cronogramaRepository.editarCronogramaRepository(
+        { _id ,"cronogramaFase.fase_id": fase_id ,"cronogramaFase.cronogramaEcs.ecs_id": ecs_id},
+        {
+            $pull: {
+                "cronogramaFase.$[f].cronogramaEcs.$[s].tareas": { _id:tarea_id }
+            }
+        },undefined,
+        {
+            arrayFilters: [
+                { "f.fase_id": fase_id },
+                { "s.ecs_id": ecs_id }
+            ],
+            new: true
+        }
+    );
+    if(!ecsObject){
+        return {messageError:'ERROR_MESSAGE'}
+    }
+    return ecsObject
+};
 
 export const quitarEcsCronogramaService = async(_id,fase_id,ecs_id)=>{
     const ecsObject = await cronogramaRepository.editarCronogramaRepository(
@@ -281,9 +416,62 @@ export const quitarRequerimientoEcsCronogramaService = async(_id,fase_id,ecs_id,
 
 
 
-export const obtenerCronogramaService = async(proyecto_id)=>{
-    return await cronogramaRepository.obtenerCronogramaRepository({proyecto_id},'proyecto_id metodologia_id cronogramaFase.fase_id cronogramaFase.cronogramaEcs.ecs_id cronogramaFase.cronogramaEcs.miembros.rol_id cronogramaFase.cronogramaEcs.miembros.equipoProyecto_id cronogramaFase.cronogramaEcs.requerimientos.requerimiento_id cronogramaFase.cronogramaEcs.requerimientos.user_id cronogramaFase.cronogramaEcs.miembros.equipoProyecto_id.user_id cronogramaFase.cronogramaEcs.miembros.equipoProyecto_id.rolEquipo_id')
-}
+export const obtenerCronogramaService = async (proyecto_id) => {
+    /*
+    "cronogramaFase.cronogramaEcs.miembros",
+
+    */
+
+    let queryCustom=cronogramaRepository.model.findOne({ proyecto_id })
+
+    queryCustom = queryCustom.populate('proyecto_id') 
+    queryCustom = queryCustom.populate('metodologia_id') 
+    queryCustom = queryCustom.populate({path:'cronogramaFase',populate:[
+        {path:"fase_id",select:'_id nombre'},
+        {
+   
+                    path: 'cronogramaEcs',
+                    populate: [
+                        {path:"ecs_id",select:'_id nombre'},
+                        {
+                            path: 'miembros',
+                            populate: [
+                                { path: 'rol_id', select: '_id nombre' },
+                                {
+                                    path: 'equipoProyecto_id',
+                                    populate: [
+                                        { path: 'user_id', select: '_id name' },
+                                        { path: 'rolEquipo_id', select: '_id nombre' }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            path: 'requerimientos',
+                            populate: [
+                                { path: 'requerimiento_id', select: '_id nombre' },
+                                { path: 'user_id', select: '_id name' }
+                            ]
+                        },
+                        {
+                            path: 'tareas',
+                            populate: [
+                                {
+                                    path: 'equipoProyecto_id',
+                                    populate: [
+                                        { path: 'user_id', select: '_id name' }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+        }
+       
+    ]}) 
+    return await queryCustom
+};
+
+
 export const editarCronogramaService = async(_id,estado_id,nombre,descripcion,fechaFin)=>{
     return await cronogramaRepository.editarCronogramaRepository({_id},{estado_id,nombre,descripcion,fechaFin})
 }

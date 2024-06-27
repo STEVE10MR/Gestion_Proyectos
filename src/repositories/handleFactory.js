@@ -21,10 +21,14 @@ export const getOneId= (model)=>async (id,popOptions) =>{
     //if(popOptions) query = query.populate(popOptions)
     return query
 }
-export const getOne= (model)=>async (filter,popOptions,selectOptions,popSelect) =>{
-    let query = model.findOne(filter)
+export const getOne= (model)=>async (filter,popOptions,selectOptions,popSelect,popPopulate,agreggate) =>{
+    let query = model.findOne(filter,agreggate)
+
+    console.log("DD",{path:popOptions,populate:popPopulate})
+
     if(selectOptions) query = query.select(selectOptions)
     if(popSelect) query = query.populate({path:popOptions,select:popSelect})
+    if(popPopulate) query = query.populate({path:popOptions,populate:popPopulate})
     else query = query.populate(popOptions)
 
     return query

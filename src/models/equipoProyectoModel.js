@@ -10,7 +10,7 @@ const equipoProyectoSchema = new Schema({
     },
     rolEquipo_id:{
         type: Schema.Types.ObjectId,
-        unique:true,
+        //unique:true,
         ref:'rolequipo',
         require:true
     },

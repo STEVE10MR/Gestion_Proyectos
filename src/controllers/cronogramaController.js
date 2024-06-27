@@ -69,6 +69,38 @@ export const agregarRequerimientoEcsCronograma = catchAsync(async(req,res,next)=
     }
     resSend(res,{statusCode:201,status:"success",data})
 })
+export const agregarTareaEcsCronograma = catchAsync(async(req,res,next)=>{
+    const {cronograma_id} = req.params
+    const {faseId,ecsId,tarea_id,titulo,descripcion,equipoMiembroId,fechaFin,fechaInicio}=req.body
+   
+    if (requireField(cronograma_id,faseId,ecsId,titulo,descripcion,equipoMiembroId,fechaFin,fechaInicio)) {
+        return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+    }
+
+    const data=await cronogramaService.agregarTareaEcsCronogramaService(cronograma_id,faseId,ecsId,tarea_id,titulo,descripcion,equipoMiembroId,fechaFin,fechaInicio)
+
+    if(typeof data === 'string'){
+        return next(new appError(translatorNext(req,data),400))
+    }
+    resSend(res,{statusCode:201,status:"success",data})
+})
+
+export const obtenerMiembrosEcsCronograma = catchAsync(async(req,res,next)=>{
+    const {cronograma_id} = req.params
+    const {faseId,ecsId}=req.body
+   
+    if (requireField(cronograma_id,faseId,ecsId)) {
+        return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+    }
+
+    const data=await cronogramaService.obtenerMiembroEcsCronogramaService(cronograma_id,faseId,ecsId)
+
+    if(typeof data === 'string'){
+        return next(new appError(translatorNext(req,data),400))
+    }
+    resSend(res,{statusCode:201,status:"success",data})
+})
+
 export const quitarFaseCronograma = catchAsync(async(req,res,next)=>{
     const {cronograma_id} = req.params
     const {faseId}=req.body
@@ -128,6 +160,22 @@ export const quitarRequerimientoEcsCronograma = catchAsync(async(req,res,next)=>
     }
     resSend(res,{statusCode:201,status:"success",data})
 })
+
+export const quitarTareaEcsCronograma = catchAsync(async(req,res,next)=>{
+    const {cronograma_id} = req.params
+    const {faseId,ecsId,tarea_id}=req.body
+    if (requireField(cronograma_id,faseId,tarea_id)) {
+        return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
+    }
+
+    const data=await cronogramaService.quitarTareaEcsCronogramaService(cronograma_id,faseId,ecsId,tarea_id)
+
+    if(typeof data === 'string'){
+        return next(new appError(translatorNext(req,data),400))
+    }
+    resSend(res,{statusCode:201,status:"success",data})
+})
+
 export const obtenerCronograma = catchAsync(async(req,res,next)=>{
     const {id} = req.params
     if (requireField(id)) {

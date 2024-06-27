@@ -12,9 +12,11 @@ router.route('/:cronograma_id').patch(cronogramaController.agregarFaseCronograma
 router.route('/:cronograma_id/agregar-ecs').patch(cronogramaController.agregarEcsCronograma)
 router.route('/:cronograma_id/agregar-miembro-ecs').patch(cronogramaController.agregarMiembroEcsCronograma)
 router.route('/:cronograma_id/agregar-requerimiento-ecs').patch(cronogramaController.agregarRequerimientoEcsCronograma)
+router.route('/:cronograma_id/agregar-tarea-ecs').patch(cronogramaController.agregarTareaEcsCronograma)
+router.route('/:cronograma_id/obtener-miembro-ecs').get(cronogramaController.obtenerMiembrosEcsCronograma)
 router.route('/:cronograma_id/quitar-fase').patch(cronogramaController.quitarFaseCronograma)
 router.route('/:cronograma_id/quitar-ecs').patch(cronogramaController.quitarEcsCronograma)
 router.route('/:cronograma_id/quitar-miembro').patch(cronogramaController.quitarMiembroEcsCronograma)
 router.route('/:cronograma_id/quitar-requerimiento').patch(cronogramaController.quitarRequerimientoEcsCronograma)
-
+router.route('/:cronograma_id/quitar-tarea').patch(cronogramaController.quitarTareaEcsCronograma)
 export default router

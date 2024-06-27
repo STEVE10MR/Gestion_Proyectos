@@ -35,14 +35,14 @@ const cronogramaSchema = new Schema({
             ecs_id:{
                 type: Schema.Types.ObjectId,
                 ref:'ecs',
-                unique:true,
+                //unique:true,
                 require:true
             },
             miembros:[{
                 rol_id :{
                     type: Schema.Types.ObjectId,
                     ref:'rol',
-                    unique:true,
+                    //unique:true,
                     require:true
                 },
                 equipoProyecto_id :{
@@ -70,8 +70,58 @@ const cronogramaSchema = new Schema({
                     type:Schema.Types.Date
                 }
             }],
+            tareas:[{
+                titulo:{type:String,required:true},
+                descripcion:{type:String,required:true},
+                equipoProyecto_id :{
+                    type: Schema.Types.ObjectId,
+                    ref:'equipoproyecto'
+                },
+                archivos: [{
+                    nombre: {
+                        type: String,
+                        required: true
+                    },
+                    url: {
+                        type: String,
+                        required: true
+                    },
+                    fechaSubida: {
+                        type: Schema.Types.Date,
+                        default: Date.now
+                    }
+                }],
+                fechaFin:{
+                    type:Schema.Types.Date
+                }
+                ,
+                fechaInicio:{
+                    type:Schema.Types.Date
+                },
+                progresoInicio :{
+                    type:Schema.Types.Number,
+                    default:0,
+                    min:0,
+                    max:100,
+                    validator:{
+                        validate:validateProgresoInicio,
+                        message:"ERROR_PROGRESO_INICIO"
+                    }
+                },
+                progresoFin :{
+                    type:Schema.Types.Number,
+                    default:100,
+                    min:0,
+                    max:100,
+                    validator:{
+                        validate:validateProgresoFin,
+                        message:"ERROR_PROGRESO_FIN"
+                    }
+                },
+            }],
             progresoInicio :{
                 type:Schema.Types.Number,
+                default:0,
                 min:0,
                 max:100,
                 validator:{
@@ -92,6 +142,7 @@ const cronogramaSchema = new Schema({
         }],
         progresoInicio :{
             type:Schema.Types.Number,
+            default:0,
             min:0,
             max:100,
             validator:{
@@ -131,6 +182,7 @@ const cronogramaSchema = new Schema({
     }],
     progresoInicio :{
         type:Schema.Types.Number,
+        default:0,
         min:0,
         max:100,
         validator:{
