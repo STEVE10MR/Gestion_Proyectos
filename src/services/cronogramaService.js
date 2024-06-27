@@ -36,7 +36,7 @@ export const agregarFaseCronogramaService = async(_id,fase_id,fechaFin,fechaInic
         if(!ecsObject) throw new Error("generate")
     }
     catch(err){
-        ecsObject=await cronogramaRepository.editarCronogramaRepository({_id},{$push:{'cronogramaFase':{fase_id,fechaFin:fechaFinObj,fechaInicio:fechaInicioObj}}})
+        ecsObject=await cronogramaRepository.editarCronogramaRepository({_id},{$push:{'cronogramaFase':{fase_id,fechaFin:fechaFin,fechaInicio:fechaInicio}}})
     }
     if(!ecsObject){
         return {messageError:'ERROR_MESSAGE'}
