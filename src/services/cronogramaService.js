@@ -30,8 +30,8 @@ export const agregarFaseCronogramaService = async(_id,fase_id,fechaFin,fechaInic
         ecsObject=await cronogramaRepository.editarCronogramaRepository({_id,"cronogramaFase.fase_id":fase_id},{
             $set:{
                 'cronogramaFase.$.fase_id':fase_id,
-                'cronogramaFase.$.fechaFin':fechaFinObj,
-                'cronogramaFase.$.fechaInicio':fechaInicioObj
+                'cronogramaFase.$.fechaFin':fechaFin,
+                'cronogramaFase.$.fechaInicio':fechaInicio
         }}) 
         if(!ecsObject) throw new Error("generate")
     }
