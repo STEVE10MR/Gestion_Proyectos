@@ -11,7 +11,7 @@ import proyectoModel from "./proyectoModel.js"
 import requerimientoModel from "./requerimientoModel.js"
 import rolEquipoModel from "./rolEquipoModel.js"
 import userModel from "./userModel.js"
-import estadoProblemasModel from "./estadoProblemasModel.js"
+import estadoProblemasModel from "./estadoGestionProblemasModel.js"
 import tareaModel from "./tareaModel.js"
 import rolModel from "./rolModel.js"
 
