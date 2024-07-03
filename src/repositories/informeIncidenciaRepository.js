@@ -7,4 +7,4 @@ export const editarInformeIncidenciaRepository = handleFactory.updateOne(Informe
 export const obtenerInformeIncidenciaRepository = handleFactory.getOneId(InformeIncidencia);
 export const listarInformeIncidenciaRepository = handleFactory.getAll(InformeIncidencia);
 export const eliminarInformeIncidenciaRepository = handleFactory.deleteOne(InformeIncidencia);
-export const activarInformeIncidenciaRepository = handleFactory.activateOne(InformeIncidencia);
+export const activarInformeIncidenciaRepository = handleFactory.ActiveOne(InformeIncidencia);

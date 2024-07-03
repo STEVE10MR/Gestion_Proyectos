@@ -1,5 +1,6 @@
 
 import mongoose from 'mongoose';
+import {connection} from './connectDatabase.js';
 
 const gestionProblemasSchema = new mongoose.Schema({
   user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },

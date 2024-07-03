@@ -1,4 +1,4 @@
-import * as estadoProblemasService from '../services/estadoProblemasService.js';
+import * as estadoProblemasService from '../services/estadoGestionProblemasService.js';
 import catchAsync from '../utils/catchAsync.js';
 import appError from '../utils/appError.js';
 import resSend from '../utils/resSend.js';
@@ -9,7 +9,7 @@ import requireField from '../utils/requireField.js';
 export const listarEstadoProblema = catchAsync(async(req,res,next)=>{
     let filter = {...req.body}
 
-    const data=await estadoProblemasService.listarEstadoProblemaService(filter,req.query)
+    const data=await estadoProblemasService.listarEstadoGestionProblemas(filter,req.query)
 
     resSend(res,{statusCode:201,status:"success",data})
 })
@@ -21,7 +21,7 @@ export const registrarEstadoProblema = catchAsync(async(req,res,next)=>{
         return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
       }
 
-    const data=await estadoProblemasService.registrarEstadoProblemaService(nombre)
+    const data=await estadoProblemasService.registrarEstadoGestionProblemas(nombre)
 
     resSend(res,{statusCode:201,status:"success",data})
 })
@@ -35,7 +35,7 @@ export const editarEstadoProblema = catchAsync(async(req,res,next)=>{
         return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
     }
 
-    const data=await estadoProblemasService.editarEstadoProblemaService(_id,nombre)
+    const data=await estadoProblemasService.editarEstadoGestionProblemas(_id,nombre)
 
     resSend(res,{statusCode:201,status:"success",data})
 })
@@ -48,7 +48,7 @@ export const eliminarEstadoProblema = catchAsync(async(req,res,next)=>{
         return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
     }
 
-    const data=await estadoProblemasService.eliminarEstadoproblemasService(delete_id)
+    const data=await estadoProblemasService.eliminarEstadoGestionProblemas(delete_id)
 
     resSend(res,{statusCode:201,status:"success",data})
 })
@@ -60,7 +60,7 @@ export const activarEstadoProblema = catchAsync(async(req,res,next)=>{
         return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'), 400));
     }
 
-    const data=await estadoProblemasService.activarEstadoproblemasService(activate_id)
+    const data=await estadoProblemasService.activarEstadoGestionProblemas(activate_id)
 
     resSend(res,{statusCode:201,status:"success",data})
 })

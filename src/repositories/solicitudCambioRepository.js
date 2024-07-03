@@ -7,4 +7,4 @@ export const editarSolicitudCambioRepository = handleFactory.updateOne(Solicitud
 export const obtenerSolicitudCambioRepository = handleFactory.getOneId(SolicitudCambio);
 export const listarSolicitudCambioRepository = handleFactory.getAll(SolicitudCambio);
 export const eliminarSolicitudCambioRepository = handleFactory.deleteOne(SolicitudCambio);
-export const activarSolicitudCambioRepository = handleFactory.activateOne(SolicitudCambio);
+export const activarSolicitudCambioRepository = handleFactory.ActiveOne(SolicitudCambio);

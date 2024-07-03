@@ -1,7 +1,7 @@
 import authRole from '../middleware/authRole.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 import express from "express";
-import * as estadoProblemasController from '../controllers/estadoProblemasController.js';
+import * as estadoProblemasController from '../controllers/estadoGestionProblemasController.js';
 
 const router = express.Router()
 

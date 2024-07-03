@@ -7,14 +7,14 @@ const router = express.Router();
 router.use(authMiddleware);
 
 router.route('/')
-  .get(estadoGestionProblemasController.listarEstadoGestionProblemas)
-  .post(estadoGestionProblemasController.registrarEstadoGestionProblemas);
+.get(estadoGestionProblemasController.listarEstadoProblema)
+.post(estadoGestionProblemasController.registrarEstadoProblema);
 
 router.route('/:id')
-  .patch(estadoGestionProblemasController.editarEstadoGestionProblemas)
-  .delete(estadoGestionProblemasController.eliminarEstadoGestionProblemas);
+.patch(estadoGestionProblemasController.editarEstadoProblema)
+.delete(estadoGestionProblemasController.eliminarEstadoProblema);
 
 router.route('/:id/activar')
-  .patch(estadoGestionProblemasController.activarEstadoGestionProblemas);
+.patch(estadoGestionProblemasController.activarEstadoProblema);
 
 export default router;

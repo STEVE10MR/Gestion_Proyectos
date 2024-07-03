@@ -7,4 +7,4 @@ export const editarGestionProblemasRepository = handleFactory.updateOne(GestionP
 export const obtenerGestionProblemasRepository = handleFactory.getOneId(GestionProblemas);
 export const listarGestionProblemasRepository = handleFactory.getAll(GestionProblemas);
 export const eliminarGestionProblemasRepository = handleFactory.deleteOne(GestionProblemas);
-export const activarGestionProblemasRepository = handleFactory.activateOne(GestionProblemas);
+export const activarGestionProblemasRepository = handleFactory.ActiveOne(GestionProblemas);

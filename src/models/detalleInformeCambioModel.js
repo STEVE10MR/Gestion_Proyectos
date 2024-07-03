@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import {connection} from './connectDatabase.js';
 const Schema = mongoose.Schema;
 
 const detalleInformeCambioSchema = new Schema({

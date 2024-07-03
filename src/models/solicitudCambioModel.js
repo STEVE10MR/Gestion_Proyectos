@@ -1,4 +1,4 @@
-
+import {connection} from './connectDatabase.js';
 import mongoose from 'mongoose';
 
 const solicitudCambioSchema = new mongoose.Schema({
