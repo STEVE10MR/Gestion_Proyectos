@@ -18,13 +18,12 @@ export const obtenerInformacion = catchAsync(async(req,res,next)=>{
 
 export const registrarUsuario= catchAsync(async (req,res,next)=>{
 
-  const {email ,firtName,lastName} = req.body
+  const {email ,firtName,lastName,role} = req.body
 
-  console.log(email ,firtName,lastName)
   if(requireField(email,firtName,lastName)){
     return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
   }
-  const userObject = await userService.crearUserService(email ,firtName,lastName);
+  const userObject = await userService.crearUserService(email ,firtName,lastName,role);
   console.log(userObject)
   if(requireField(userObject.user,userObject.token,userObject.password)){
     return next(new appError(translatorNext(req,userObject.messageError),400))

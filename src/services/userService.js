@@ -2,7 +2,7 @@ import * as userRepository from "../repositories/userRepository.js"
 import * as equipoProyectoService from "./equipoProyectoService.js"
 import * as miembroCambioService from "./miembroCambioService.js"
 
-export const crearUserService = async (email ,firtName,lastName)=>{
+export const crearUserService = async (email ,firtName,lastName,role)=>{
 
   const existUser = await userRepository.obtenerUser({ email: email });
  
@@ -11,7 +11,7 @@ export const crearUserService = async (email ,firtName,lastName)=>{
   }
   const user = userRepository.obtenerInstancia({ email: email })
   user.name = `${firtName} ${lastName}`
-
+  user.role = role
   const password=user.generatePassword()
   const token = user.createPasswordResetToken()
   const userUpdate=await user.save()

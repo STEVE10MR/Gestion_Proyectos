@@ -13,7 +13,6 @@ import moduloRequerimientoRoute from "./moduloRequerimientoRoute.js";
 //import solicitudCambioRoute from "./solicitudCambioRoute.js";
 //import informeIncidenciaRoute from "./informeIncidenciaRoute.js";
 import gestionProblemasRoute from "./gestionProblemasRoute.js";
-import estadoGestionProblemasRoute from "./estadoGestionProblemasRoute.js";
 import detalleGestionProblemasRoute from "./detalleGestionProblemasRoute.js";
 const route = express.Router()
 
@@ -31,6 +30,5 @@ route.use("/moduloRequerimiento",moduloRequerimientoRoute)
 //route.use("/solicitudcambio", solicitudCambioRoute);
 //route.use("/informeincidencia", informeIncidenciaRoute);
 route.use("/gestionproblemas", gestionProblemasRoute);
-route.use("/estadogestionproblemas", estadoGestionProblemasRoute);
 route.use("/detallegestionproblemas", detalleGestionProblemasRoute);
 export default route
