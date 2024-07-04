@@ -169,7 +169,8 @@ export const listarProyectoPorRolEquipo  = catchAsync(async (req,res,next)=>{
 
   const {_id:user_id} = req.user
   const {rolEquipo_id}= req.params
-  console.log(user_id,rolEquipo_id)
+
+
   if(requireField(user_id,rolEquipo_id)){
     return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
   }

@@ -76,7 +76,7 @@ export const listarEquipoProyectoUserService = async (user_id)=>{
 
 export const listarProyectoPorRolEquipoUserService = async (user_id,rolEquipo_id)=>{
 
-  const user=await equipoProyectoService.listarEquipoProyectoService({user_id,rolEquipo_id},undefined,"proyecto_id")
+  const user=await equipoProyectoService.listarEquipoProyectoService({user_id,rolEquipo_id},undefined,"proyecto_id user_id rolEquipo_id")
   return user
 }
 

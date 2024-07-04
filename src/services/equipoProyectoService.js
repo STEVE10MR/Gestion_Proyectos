@@ -59,10 +59,10 @@ export const listarEquipoProyectoUserService = async (userId)=>{
 }
 
 /*Quitar de rutas y de la vista*/
-export const listarEquipoProyectoService = async (body,query)=>{
+export const listarEquipoProyectoService = async (body,query,popOptions)=>{
     let filter= undefined
     if(body) filter = {...body}
-    return await equipoProyectoRepository.listaEquipoProyectoRepository(filter,query,"user_id rolEquipo_id") 
+    return await equipoProyectoRepository.listaEquipoProyectoRepository(filter,query,popOptions) 
 }
 
 export const listarEquipoJefeDeProyectoService = async (body,query,popOptions)=>{
