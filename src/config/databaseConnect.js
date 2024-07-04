@@ -35,8 +35,8 @@ class DatabaseConnect {
     }
     replaceUriMongo(...values){
  
-        //let uri = process.env.NODE_ENV === "development" ? process.env.MONGO_URI_LOCAL : process.env.NODE_ENV === "alfa" ? process.env.MONGO_URI_CLOUD : process.env.MONGO_URI_LOCAL
-        let uri = process.env.NODE_ENV === "alfa" ? process.env.MONGO_URI_LOCAL : process.env.MONGO_URI_CLOUD
+        let uri = process.env.NODE_ENV === "development" ? process.env.MONGO_URI_LOCAL : process.env.NODE_ENV === "alfa" ? process.env.MONGO_URI_CLOUD : process.env.MONGO_URI_LOCAL
+        
         console.log(process.env.NODE_ENV)
         
         uri = uri.replaceAll("<<user>>",values[0])
