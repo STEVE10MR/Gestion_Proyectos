@@ -179,7 +179,6 @@ export const listarProyectoPorRolEquipo  = catchAsync(async (req,res,next)=>{
     
 })
 
-
 export const listarMiembroCambio  = catchAsync(async (req,res,next)=>{
 
   const {_id:user_id} = req.user

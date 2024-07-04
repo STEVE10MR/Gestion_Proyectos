@@ -1,5 +1,5 @@
 import * as cronogramaRepository from "../repositories/cronogramaRepository.js"
-
+import mongoose from "mongoose";
 
 const verificarFechas=(fechaFin,fechaInicio)=>{
     const fechaFinObj = new Date(fechaFin);
@@ -52,49 +52,6 @@ export const quitarFaseCronogramaService = async(_id,fase_id)=>{
     }
     return ecsObject
 }
-/*
-export const agregarEcsCronogramaService = async (_id, fase_id, ecs_id, rol_id, project_manager_id, user_id_jefep, requerimiento_id) => {
-    let ecsObject = null;
-    const miembros = { rol_id, user_id: project_manager_id };
-    const requerimientos = { user_id: user_id_jefep, requerimiento_id };
-    if(!miembros || !requerimientos) return { messageError: 'ERROR_MESSAGE' };
-    try {
-        ecsObject = await cronogramaRepository.editarCronogramaRepository(
-            { _id, "cronogramaFase.fase_id": fase_id, "cronogramaFase.cronogramaEcs.ecs_id": ecs_id },
-            {
-                $set: {
-                    'cronogramaFase.$[f].cronogramaEcs.$[e].miembros': miembros,
-                    'cronogramaFase.$[f].cronogramaEcs.$[e].requerimientos': requerimientos,
-                }
-            },undefined,
-            {
-                arrayFilters: [
-                    { "f.fase_id": fase_id },
-                    { "e.ecs_id": ecs_id }
-                ],
-                new: true
-            }
-        );
-        if(!ecsObject) throw new Error("generate")
-    } catch (err) {
-        ecsObject = await cronogramaRepository.editarCronogramaRepository(
-            { _id, "cronogramaFase.fase_id": fase_id },
-            {
-                $push: {
-                    'cronogramaFase.$.cronogramaEcs': { ecs_id}
-                }
-            }
-        );
-
-    }
-    if (!ecsObject) {
-        return { messageError: 'ERROR_MESSAGE' };
-    }
-
-    return ecsObject;
-};
-*/
-
 
 export const agregarEcsCronogramaService = async (_id, fase_id, ecs_id) => {
     
@@ -471,7 +428,176 @@ export const obtenerCronogramaService = async (proyecto_id) => {
     return await queryCustom
 };
 
+/*
+export const obtenerTarearCronogramaService = async (proyecto_id,equipoProyecto_id) => {
 
+
+    console.log(proyecto_id,equipoProyecto_id)
+    let queryCustom=cronogramaRepository.model.findOne({ proyecto_id:new mongoose.Types.ObjectId(proyecto_id) ,"cronogramaFase.cronogramaEcs.miembros.equipoProyecto_id":new mongoose.Types.ObjectId(equipoProyecto_id) })
+
+    
+    queryCustom = queryCustom.populate({
+        path: 'cronogramaFase',
+        populate: {
+            path: 'cronogramaEcs',
+            populate: {
+                path: 'miembros',
+                select: 'equipoProyecto_id',
+                match: { equipoProyecto_id }
+            }
+        }
+    });
+    
+    queryCustom=await queryCustom
+
+    console.log(queryCustom.cronogramaFase[0])
+
+    return queryCustom.cronogramaFase[0]
+};
+
+
+*/
+
+export const obtenerTarearCronogramaService = async (proyecto_id, equipoProyecto_id) => {
+
+    const proyectoObjectId = new mongoose.Types.ObjectId(proyecto_id);
+    const equipoProyectoObjectId = new mongoose.Types.ObjectId(equipoProyecto_id);
+
+    const pipeline = [
+        {
+            $match: { proyecto_id: proyectoObjectId }
+        },
+        {
+            $unwind: "$cronogramaFase"
+        },
+        {
+            $lookup: {
+                from: "fases", // Nombre de la colección de fases
+                localField: "cronogramaFase.fase_id",
+                foreignField: "_id",
+                as: "cronogramaFase.faseDetalles"
+            }
+        },
+        {
+            $unwind: "$cronogramaFase.faseDetalles"
+        },
+        {
+            $unwind: "$cronogramaFase.cronogramaEcs"
+        },
+        {
+            $unwind: "$cronogramaFase.cronogramaEcs.tareas"
+        },
+        {
+            $match: { "cronogramaFase.cronogramaEcs.tareas.equipoProyecto_id": equipoProyectoObjectId }
+        },
+        {
+            $group: {
+                _id: {
+                    id: "$_id",
+                    fase_id: "$cronogramaFase.fase_id",
+                    ecs_id: "$cronogramaFase.cronogramaEcs.ecs_id"
+                },
+                proyecto_id: { $first: "$proyecto_id" },
+                progresoInicio: { $first: "$cronogramaFase.progresoInicio" },
+                progresoFin: { $first: "$cronogramaFase.progresoFin" },
+                fechaFin: { $first: "$cronogramaFase.fechaFin" },
+                fechaInicio: { $first: "$cronogramaFase.fechaInicio" },
+                faseDetalles: { $first: "$cronogramaFase.faseDetalles" },
+                ecs_progresoInicio: { $first: "$cronogramaFase.cronogramaEcs.progresoInicio" },
+                ecs_progresoFin: { $first: "$cronogramaFase.cronogramaEcs.progresoFin" },
+                ecs_miembros: { $first: "$cronogramaFase.cronogramaEcs.miembros" },
+                ecs_requerimientos: { $first: "$cronogramaFase.cronogramaEcs.requerimientos" },
+                tareas: { $push: "$cronogramaFase.cronogramaEcs.tareas" }
+            }
+        },
+        {
+            $group: {
+                _id: "$_id.id",
+                proyecto_id: { $first: "$proyecto_id" },
+                cronogramaFase: {
+                    $push: {
+                        fase_id: "$_id.fase_id",
+                        progresoInicio: "$progresoInicio",
+                        progresoFin: "$progresoFin",
+                        fechaFin: "$fechaFin",
+                        fechaInicio: "$fechaInicio",
+                        faseDetalles: "$faseDetalles",
+                        cronogramaEcs: {
+                            ecs_id: "$_id.ecs_id",
+                            progresoInicio: "$ecs_progresoInicio",
+                            progresoFin: "$ecs_progresoFin",
+                            miembros: "$ecs_miembros",
+                            requerimientos: "$ecs_requerimientos",
+                            tareas: "$tareas"
+                        }
+                    }
+                }
+            }
+        }
+    ];
+
+    const result = await cronogramaRepository.model.aggregate(pipeline).exec();
+    
+    if (!result || result.length === 0) {
+        return null;
+    }
+
+    return result[0].cronogramaFase;
+};
+export const obtenerTareaCronogramaService = async (proyecto_id, tarea_id) => {
+
+    const proyectoObjectId = new mongoose.Types.ObjectId(proyecto_id);
+    const tareaObjectId = new mongoose.Types.ObjectId(tarea_id);
+
+    const pipeline = [
+        {
+            $match: { proyecto_id: proyectoObjectId }
+        },
+        {
+            $unwind: "$cronogramaFase"
+        },
+        {
+            $unwind: "$cronogramaFase.cronogramaEcs"
+        },
+        {
+            $match: { "cronogramaFase.cronogramaEcs.tareas._id": tareaObjectId }
+        },
+        {
+            $group: {
+                _id: "$_id",
+                cronogramaFase: { 
+                    $push: {
+                        fase_id: "$cronogramaFase.fase_id",
+                        progresoInicio: "$cronogramaFase.progresoInicio",
+                        progresoFin: "$cronogramaFase.progresoFin",
+                        fechaFin: "$cronogramaFase.fechaFin",
+                        fechaInicio: "$cronogramaFase.fechaInicio",
+                        cronogramaEcs: {
+                            ecs_id: "$cronogramaFase.cronogramaEcs.ecs_id",
+                            progresoInicio: "$cronogramaFase.cronogramaEcs.progresoInicio",
+                            progresoFin: "$cronogramaFase.cronogramaEcs.progresoFin",
+                            requerimientos: {
+                                $first: {
+                                    $ifNull: ["$cronogramaFase.cronogramaEcs.requerimientos", []]
+                                }
+                            },
+                            tareas: {
+                                $filter: {
+                                    input: "$cronogramaFase.cronogramaEcs.tareas",
+                                    as: "tarea",
+                                    cond: { $eq: ["$$tarea._id", tareaObjectId] }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ];
+
+    const result = await cronogramaRepository.model.aggregate(pipeline)
+    return result[0].cronogramaFase[0].cronogramaEcs.tareas[0];
+};
 export const editarCronogramaService = async(_id,estado_id,nombre,descripcion,fechaFin)=>{
     return await cronogramaRepository.editarCronogramaRepository({_id},{estado_id,nombre,descripcion,fechaFin})
 }

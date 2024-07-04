@@ -9,6 +9,7 @@ import rolEquipoRoute from "./rolEquipoRoute.js";
 import rolRoute from "./rolRouter.js";
 import proyectoRoute from "./proyectoRoute.js";
 import moduloRequerimientoRoute from "./moduloRequerimientoRoute.js";
+import tareasRoute from "./tareasRoute.js";
 //import informeCambioRoute from "./informeCambioRoute.js";
 //import solicitudCambioRoute from "./solicitudCambioRoute.js";
 //import informeIncidenciaRoute from "./informeIncidenciaRoute.js";
@@ -26,6 +27,7 @@ route.use("/rolequipo",rolEquipoRoute)
 route.use("/rol",rolRoute)
 route.use("/proyecto",proyectoRoute)
 route.use("/moduloRequerimiento",moduloRequerimientoRoute)
+route.use("/tareas",tareasRoute)
 //route.use("/informecambio", informeCambioRoute);
 //route.use("/solicitudcambio", solicitudCambioRoute);
 //route.use("/informeincidencia", informeIncidenciaRoute);

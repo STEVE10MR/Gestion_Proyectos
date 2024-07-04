@@ -5,6 +5,10 @@ export const listarRolEquipoService = async(body,query,popOptions)=>{
     if(body) filter = {...body}
     return await rolEquipoRepository.listaRolEquipoRepository(filter,query,popOptions)
 } 
+
+export const obtenerRolEquipoService = async(filter,popOptions,selectOptions,popSelect,popPopulate,agreggate)=>{
+    return await rolEquipoRepository.obtenerRolEquipoRepository(filter,popOptions,selectOptions,popSelect,popPopulate,agreggate)
+} 
 export const registrarRolEquipoService = async(nombre)=>{
     return await rolEquipoRepository.crearRolEquipoRepository({nombre})
 } 
