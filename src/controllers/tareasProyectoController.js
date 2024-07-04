@@ -10,8 +10,8 @@ import resetUrl from '../utils/resetUrl.js';
 
 export const listarTareas  = catchAsync(async (req,res,next)=>{
     const {_id:user_id}=req.user
-    const {selectedProject:proyecto_id,teamRole:equipoProyecto}= req.body
-
+    const {selectedProject:proyecto_id,teamRole:equipoProyecto}= req.query
+    
   
     if(requireField(user_id,proyecto_id,equipoProyecto)){
       return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
@@ -24,7 +24,7 @@ export const listarTareas  = catchAsync(async (req,res,next)=>{
 
   export const obtenerTarea  = catchAsync(async (req,res,next)=>{
     const {_id:user_id}=req.user
-    const {selectedProject:proyecto_id,tareaId:tarea_id}= req.body
+    const {selectedProject:proyecto_id,tareaId:tarea_id}= req.query
   
     if(requireField(proyecto_id,tarea_id)){
       return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
