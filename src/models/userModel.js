@@ -125,6 +125,4 @@ userSchema.methods.getFields = function(){
   return ['system','name','socketOption','email','password','passwordConfirm','active']
 }
 
-
-
 export default connection().model('user', userSchema);

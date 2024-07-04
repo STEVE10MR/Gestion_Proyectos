@@ -9,16 +9,12 @@ export const crearUserService = async (email ,firtName,lastName)=>{
   if (existUser) {
     return {messageError:'USER_EXISTS'}
   }
-  const user = userRepository.obtenerInstancia
-  
-  user.name = `${firtName} ${lastName}`,
-  user.email = email
-  
+  const user = userRepository.obtenerInstancia({ email: email })
+  user.name = `${firtName} ${lastName}`
+
   const password=user.generatePassword()
   const token = user.createPasswordResetToken()
-
   const userUpdate=await user.save()
-
   return {user:userUpdate , password , token}
 }
 

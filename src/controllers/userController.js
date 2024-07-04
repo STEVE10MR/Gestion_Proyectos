@@ -25,7 +25,7 @@ export const registrarUsuario= catchAsync(async (req,res,next)=>{
     return next(new appError(translatorNext(req,'MISSING_REQUIRED_FIELDS'),400))
   }
   const userObject = await userService.crearUserService(email ,firtName,lastName);
- 
+  console.log(userObject)
   if(requireField(userObject.user,userObject.token,userObject.password)){
     return next(new appError(translatorNext(req,userObject.messageError),400))
   }
