@@ -1,5 +1,7 @@
 import * as cronogramaRepository from "../repositories/cronogramaRepository.js"
+import * as rolService from "../services/rolService.js"
 import mongoose from "mongoose";
+import { listarEquipoJefeDeProyectoService } from "./equipoProyectoService.js";
 
 const verificarFechas=(fechaFin,fechaInicio)=>{
     const fechaFinObj = new Date(fechaFin);
@@ -131,29 +133,47 @@ export const agregarRequerimientoEcsCronogramaService = async (_id, fase_id, ecs
 export const agregarMiembroEcsCronogramaService = async (_id, fase_id, ecs_id, rol_id, equipoMiembro_id) => {
     
     const miembros = { rol_id, equipoProyecto_id:equipoMiembro_id };
+    
+    console.log(_id, fase_id, ecs_id, rol_id, equipoMiembro_id)
     let ecsObject=null
     try{
         ecsObject = await cronogramaRepository.editarCronogramaRepository(
-            { _id, "cronogramaFase.fase_id": fase_id ,"cronogramaFase.cronogramaEcs.ecs_id": ecs_id ,"cronogramaFase.cronogramaEcs.miembros.equipoProyecto_id": equipoMiembro_id},
+            {
+                _id,
+                "cronogramaFase.fase_id": fase_id,
+                "cronogramaFase.cronogramaEcs.ecs_id": ecs_id,
+                "cronogramaFase.cronogramaEcs.miembros.equipoProyecto_id": equipoMiembro_id
+            },
             {
                 $set: {
                     'cronogramaFase.$[f].cronogramaEcs.$[s].miembros.$[m].equipoProyecto_id': equipoMiembro_id,
                     'cronogramaFase.$[f].cronogramaEcs.$[s].miembros.$[m].rol_id': rol_id
                 }
-            },undefined,
+            },
+            undefined
+            ,
             {
                 arrayFilters: [
                     { "f.fase_id": fase_id },
                     { "s.ecs_id": ecs_id },
-                    //{ "m.user_id": equipoMiembro_id }
-                    { "m.equipoMiembro_id": equipoMiembro_id }
+                    { "m.equipoProyecto_id": equipoMiembro_id }
                 ],
                 new: true
             }
         );
-        if(!ecsObject) throw new Error("generate")
+        
+        const updatedDocument = await cronogramaRepository.obtenerCronogramaRepository({_id});
+        const matchingFase = updatedDocument.cronogramaFase.find(f => f.fase_id.toString() === fase_id);
+        const matchingEcs = matchingFase ? matchingFase.cronogramaEcs.find(e => e.ecs_id.toString() === ecs_id) : null;
+        const matchingMiembro = matchingEcs ? matchingEcs.miembros.find(m => m.equipoProyecto_id.toString() === equipoMiembro_id) : null;
+        
+
+        if (!matchingMiembro) {
+            throw new Error("No matching document found after update");
+        }
     }
     catch(err){
+        console.log(err)
         ecsObject = await cronogramaRepository.editarCronogramaRepository(
             { _id, "cronogramaFase.fase_id": fase_id ,"cronogramaFase.cronogramaEcs.ecs_id": ecs_id },
             {
@@ -229,11 +249,9 @@ export const agregarTareaEcsCronogramaService = async (_id, fase_id, ecs_id,tare
 
 
     try{
-        console.log("tarea",_id,fase_id,ecs_id,tarea_id)
         if(!tarea_id){
             throw new Error("generate")
         }
-        console.log("dea")
         ecsObject = await cronogramaRepository.editarCronogramaRepository(
             { _id, "cronogramaFase.fase_id": fase_id ,"cronogramaFase.cronogramaEcs.ecs_id": ecs_id ,"cronogramaFase.cronogramaEcs.tareas._id": tarea_id},
             {
@@ -280,6 +298,99 @@ export const agregarTareaEcsCronogramaService = async (_id, fase_id, ecs_id,tare
     }
 
     return ecsObject;
+};
+
+
+export const editarTareaEcsCronogramaService = async (_id, fase_id, ecs_id,rolId,tarea_id,equipoMiembro_id,fechaFin,fechaInicio,archivos,progresoInicio,progresoFin,estado) => {
+
+    const rol = await rolService.obtenerRolService(rolId);
+    const rolName = ["Responsable", "Aprobador", "Revisor"].find(value => value === rol.nombre);
+
+    const setUpdateMap = {
+        "Responsable": { 'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].archivos': archivos },
+        "Revisor": {
+            'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].progresoInicio': progresoInicio
+        },
+        "Aprobador": {
+            'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].active': estado,
+            'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].fechaFin': fechaFin,
+            'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].fechaInicio': fechaInicio
+        }
+    };
+ 
+    const setUpdate = setUpdateMap[rolName] ?? null;
+    if (!setUpdate) {
+        return { messageError: 'ERROR_MESSAGE' };
+    }
+
+    if(verificarFechas(fechaFin,fechaInicio)){
+        return {messageError:'ERROR_MESSAGE'}
+    }
+    const userCheck = await verificarMiembroEcsCronogramaService(_id, fase_id, ecs_id,equipoMiembro_id)
+    if(!userCheck){
+        return { messageError: 'ERROR_MESSAGE' };
+    }
+
+    let ecsObject=null
+
+
+    try{
+        if(!tarea_id){
+            throw new Error("generate")
+        }
+        console.log(setUpdate)
+        ecsObject = await cronogramaRepository.editarCronogramaRepository(
+            { _id, "cronogramaFase.fase_id": fase_id ,"cronogramaFase.cronogramaEcs.ecs_id": ecs_id ,"cronogramaFase.cronogramaEcs.tareas._id": tarea_id},
+            {
+                $set: setUpdate
+            },undefined,
+            {
+                arrayFilters: [
+                    { "f.fase_id": fase_id },
+                    { "s.ecs_id": ecs_id },
+                    { "t._id": tarea_id }
+                ],
+                new: true
+            }
+        );
+        if(!ecsObject) throw new Error("generate")
+    }
+    catch(err){
+        return { messageError: 'ERROR_MESSAGE' };
+    }
+
+    if (!ecsObject) {
+        return { messageError: 'ERROR_MESSAGE' };
+    }
+
+    rolName == 'Revisor' && await actualizarProgresoProyecto(ecsObject.proyecto_id)
+
+    return ecsObject;
+};
+
+
+const actualizarProgresoProyecto = async (proyectoId) => {
+
+    const proyecto = await cronogramaRepository.obtenerCronogramaRepository({ proyecto_id: proyectoId });
+
+    if (!proyecto) {
+        throw new Error('Proyecto no encontrado');
+    }
+
+    proyecto.cronogramaFase.forEach(fase => {
+        fase.cronogramaEcs.forEach(ecs => {
+            const totalProgresoTareas = ecs.tareas.reduce((total, tarea) => total + tarea.progresoInicio, 0);
+            ecs.progresoInicio = totalProgresoTareas / ecs.tareas.length;
+        });
+
+        const totalProgresoEcs = fase.cronogramaEcs.reduce((total, ecs) => total + ecs.progresoInicio, 0);
+        fase.progresoInicio = totalProgresoEcs / fase.cronogramaEcs.length;
+    });
+
+    const totalProgresoFases = proyecto.cronogramaFase.reduce((total, fase) => total + fase.progresoInicio, 0);
+    proyecto.progresoInicio = totalProgresoFases / proyecto.cronogramaFase.length;
+
+    await proyecto.save();
 };
 
 export const quitarTareaEcsCronogramaService = async (_id, fase_id, ecs_id, tarea_id) => {
@@ -428,41 +539,19 @@ export const obtenerCronogramaService = async (proyecto_id) => {
     return await queryCustom
 };
 
-/*
-export const obtenerTarearCronogramaService = async (proyecto_id,equipoProyecto_id) => {
 
-
-    console.log(proyecto_id,equipoProyecto_id)
-    let queryCustom=cronogramaRepository.model.findOne({ proyecto_id:new mongoose.Types.ObjectId(proyecto_id) ,"cronogramaFase.cronogramaEcs.miembros.equipoProyecto_id":new mongoose.Types.ObjectId(equipoProyecto_id) })
-
-    
-    queryCustom = queryCustom.populate({
-        path: 'cronogramaFase',
-        populate: {
-            path: 'cronogramaEcs',
-            populate: {
-                path: 'miembros',
-                select: 'equipoProyecto_id',
-                match: { equipoProyecto_id }
-            }
-        }
-    });
-    
-    queryCustom=await queryCustom
-
-    console.log(queryCustom.cronogramaFase[0])
-
-    return queryCustom.cronogramaFase[0]
-};
-
-
-*/
+const obtenerRolesEquipoProyectoCronograma = async()=>{
+    const cronograma = cronogramaRepository.obtenerCronogramaRepository({})
+}
 
 export const obtenerTarearCronogramaService = async (proyecto_id, equipoProyecto_id) => {
 
     const proyectoObjectId = new mongoose.Types.ObjectId(proyecto_id);
     const equipoProyectoObjectId = new mongoose.Types.ObjectId(equipoProyecto_id);
 
+    //const rolObjectId = new mongoose.Types.ObjectId('667b1690c9c918cb9197df53');
+    //const rolObjectId = new mongoose.Types.ObjectId('667b169cc9c918cb9197df56');
+    //const rolObjectId = new mongoose.Types.ObjectId('667b16acc9c918cb9197df59');
     const pipeline = [
         {
             $match: { proyecto_id: proyectoObjectId }
@@ -472,7 +561,7 @@ export const obtenerTarearCronogramaService = async (proyecto_id, equipoProyecto
         },
         {
             $lookup: {
-                from: "fases", // Nombre de la colección de fases
+                from: "fases",
                 localField: "cronogramaFase.fase_id",
                 foreignField: "_id",
                 as: "cronogramaFase.faseDetalles"
@@ -594,9 +683,26 @@ export const obtenerTareaCronogramaService = async (proyecto_id, tarea_id) => {
             }
         }
     ];
-
+    
+    
     const result = await cronogramaRepository.model.aggregate(pipeline)
-    return result[0].cronogramaFase[0].cronogramaEcs.tareas[0];
+    const cronogramaObjectId=result[0]._id
+    const faseObjectId=result[0].cronogramaFase[0].fase_id
+    const ecsObjectId=result[0].cronogramaFase[0].cronogramaEcs.ecs_id
+    const equipoProyectoObjectId=result[0].cronogramaFase[0].cronogramaEcs.tareas[0].equipoProyecto_id
+
+
+    const cronogramaEquipoProyecto = await cronogramaRepository.obtenerCronogramaRepository({proyecto_id,"cronogramaFase.cronogramaEcs.ecs_id":ecsObjectId,"cronogramaFase.cronogramaEcs.tareas.equipoProyecto_id":equipoProyectoObjectId}) 
+ 
+    const matchingFase = cronogramaEquipoProyecto.cronogramaFase.find((value)=> String(value.fase_id) === String(faseObjectId))
+    const matchingEcs = matchingFase.cronogramaEcs.find((value)=> String(value.ecs_id) === String(ecsObjectId))
+    const matchingMiembros= matchingEcs.miembros.find((value)=> String(value.equipoProyecto_id) === String(equipoProyectoObjectId))
+
+    const rol = await rolService.obtenerRolService(matchingMiembros.rol_id);
+
+    const permisoRol = ["Responsable","Aprobador","Revisor"].find(value=> value==rol.nombre )?rol : null;
+    
+    return {...result[0].cronogramaFase[0].cronogramaEcs.tareas[0],permissions:permisoRol._id,rol:permisoRol.nombre,faseId:faseObjectId,ecsId:ecsObjectId , cronogramaId:cronogramaObjectId};
 };
 export const editarCronogramaService = async(_id,estado_id,nombre,descripcion,fechaFin)=>{
     return await cronogramaRepository.editarCronogramaRepository({_id},{estado_id,nombre,descripcion,fechaFin})

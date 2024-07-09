@@ -8,6 +8,9 @@ export const listarRolService = async(body,query,popOptions)=>{
 export const registrarRolService = async(nombre)=>{
     return await rolRepository.crearRolRepository({nombre})
 } 
+export const obtenerRolService = async(_id)=>{
+    return await rolRepository.obtenerRolRepository(_id)
+} 
 export const editarRolService = async(_id,nombre)=>{
     return await rolRepository.editarRolRepository({_id},{nombre})
 } 

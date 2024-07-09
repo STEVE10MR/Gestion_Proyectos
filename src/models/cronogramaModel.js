@@ -77,6 +77,7 @@ const cronogramaSchema = new Schema({
                     type: Schema.Types.ObjectId,
                     ref:'equipoproyecto'
                 },
+                active:{type:Boolean,default:true},
                 archivos: [{
                     nombre: {
                         type: String,
