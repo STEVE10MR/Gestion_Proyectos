@@ -301,7 +301,7 @@ export const agregarTareaEcsCronogramaService = async (_id, fase_id, ecs_id,tare
 };
 
 
-export const editarTareaEcsCronogramaService = async (_id, fase_id, ecs_id,rolId,tarea_id,equipoMiembro_id,fechaFin,fechaInicio,archivos,progresoInicio,progresoFin,estado) => {
+export const editarTareaEcsCronogramaService = async (_id, fase_id, ecs_id,rolId,tarea_id,equipoMiembro_id,fechaFin,fechaInicio,archivos,progresoInicio,progresoFin,estado,user_id) => {
 
     const rol = await rolService.obtenerRolService(rolId);
     const rolName = ["Responsable", "Aprobador", "Revisor"].find(value => value === rol.nombre);
@@ -309,12 +309,14 @@ export const editarTareaEcsCronogramaService = async (_id, fase_id, ecs_id,rolId
     const setUpdateMap = {
         "Responsable": { 'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].archivos': archivos },
         "Revisor": {
-            'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].progresoInicio': progresoInicio
+            'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].progresoInicio': progresoInicio,
+            'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].revisor': user_id
         },
         "Aprobador": {
             'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].active': estado,
             'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].fechaFin': fechaFin,
-            'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].fechaInicio': fechaInicio
+            'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].fechaInicio': fechaInicio,
+            'cronogramaFase.$[f].cronogramaEcs.$[s].tareas.$[t].aprobador': user_id
         }
     };
  
@@ -529,7 +531,9 @@ export const obtenerCronogramaService = async (proyecto_id) => {
                                     populate: [
                                         { path: 'user_id', select: '_id name' }
                                     ]
-                                }
+                                },
+                                { path: 'revisor', select: '_id name' },
+                                { path: 'aprobador', select: '_id name' },
                             ]
                         }
                     ]

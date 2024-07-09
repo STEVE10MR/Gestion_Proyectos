@@ -77,6 +77,14 @@ const cronogramaSchema = new Schema({
                     type: Schema.Types.ObjectId,
                     ref:'equipoproyecto'
                 },
+                revisor :{
+                    type: Schema.Types.ObjectId,
+                    ref:'user'
+                },
+                aprobador :{
+                    type: Schema.Types.ObjectId,
+                    ref:'user'
+                },
                 active:{type:Boolean,default:true},
                 archivos: [{
                     nombre: {

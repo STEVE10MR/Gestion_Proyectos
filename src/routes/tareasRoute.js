@@ -40,10 +40,11 @@ router.route('/')
 router.route('/obtener')
 .get(tareasProyectoController.obtenerTarea)
 
+router.route('/descargar')
+.patch(tareasProyectoController.descargarArchivoTarea)
+
 router.route('/:idTarea')
 .patch(upload.any(),tareasProyectoController.editarTarea)
 
-router.route('/descargar/:nombreArchivo')
-.get(tareasProyectoController.descargarArchivoTarea)
 
 export default router;
