@@ -68,7 +68,10 @@ export const listarEquipoProyectoService = async (body,query,popOptions)=>{
 }
 export const listarTareasProyectoService = async (user_id,proyecto_id,equipoProyectoName)=>{
     const rolEquipo=await rolEquipoService.obtenerRolEquipoService({nombre:equipoProyectoName ,active:true})
+    if(!rolEquipo) return []
     const equipoProyecto=await equipoProyectoRepository.obtenerEquipoProyectoRepository({user_id,rolEquipo_id:rolEquipo._id,proyecto_id})
+    if(!equipoProyecto) return []
+
     return await cronogramaService.obtenerTarearCronogramaService(proyecto_id,equipoProyecto._id) 
 }
 

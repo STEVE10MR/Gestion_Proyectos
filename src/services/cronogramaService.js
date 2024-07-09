@@ -323,7 +323,7 @@ export const editarTareaEcsCronogramaService = async (_id, fase_id, ecs_id,rolId
         return { messageError: 'ERROR_MESSAGE' };
     }
 
-    if(verificarFechas(fechaFin,fechaInicio)){
+    if(rolName === "Aprobador" && fechaInicio && verificarFechas(fechaFin,fechaInicio)){
         return {messageError:'ERROR_MESSAGE'}
     }
     const userCheck = await verificarMiembroEcsCronogramaService(_id, fase_id, ecs_id,equipoMiembro_id)

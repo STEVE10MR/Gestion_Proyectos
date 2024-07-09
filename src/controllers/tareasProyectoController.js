@@ -7,10 +7,18 @@ import resSend from '../utils/resSend.js';
 import translatorNext from '../utils/translatorNext.js';
 import requireField from '../utils/requireField.js';
 import resetUrl from '../utils/resetUrl.js';
+import path from 'path'
+import multer from "multer"
+import fs from "fs"
+import { fileURLToPath } from 'url';
+
+
+
 
 
 export const listarTareas  = catchAsync(async (req,res,next)=>{
     const {_id:user_id}=req.user
+    console.log(req.user)
     const {selectedProject:proyecto_id,teamRole:equipoProyecto}= req.query
     
   
@@ -57,3 +65,25 @@ export const listarTareas  = catchAsync(async (req,res,next)=>{
    
   
   })
+
+  export const descargarArchivoTarea = catchAsync(async (req, res, next) => {
+    const { nombreArchivo } = req.params;
+    
+    if (requireField(nombreArchivo)) {
+      return next(new appError(translatorNext(req, 'MISSING_REQUIRED_FIELDS'), 400));
+    }
+    
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const rutaArchivo = path.join(__dirname, 'src/routes/uploads', nombreArchivo);
+  
+    if (!fs.existsSync(rutaArchivo)) {
+      return next(new appError(translatorNext(req, 'FILE_NOT_FOUND'), 404));
+    }
+  
+    res.download(rutaArchivo, nombreArchivo, (err) => {
+      if (err) {
+        return next(new appError("No se pudo descargar el archivo. " + err.message, 500));
+      }
+    });
+  });
